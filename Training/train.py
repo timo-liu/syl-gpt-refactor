@@ -12,6 +12,7 @@ import argparse
 import wandb
 from Definitions.Model import *
 from dotenv import load_dotenv
+from dataclasses import dataclass
 # endregion imports
 
 # region email
@@ -42,7 +43,7 @@ argparser.add_argument('config', type=str)
 argparser.add_argument('data_path', type=str)
 argparser.add_argument('out_path', type=str)
 argparser.add_argument('--weights_path', type=str)
-argparser.add_argument('--pretraining', type=bool, default=True)
+argparser.add_argument('--pretraining', type=bool, default=False)
 argparser.add_argument('--task', type=str)
 argparser.add_argument('--cross_val_counter', type=int)
 cli_args = argparser.parse_args()
@@ -60,11 +61,17 @@ def next_multiple_of_128(v: int) -> int:
 config.vocab_size = next_multiple_of_128(config.vocab_size)
 
 if cli_args.pretraining:
+    print("Pretraining")
     args.input_bin = f"{config.language}_{config.paradigm}_CORPUS/{config.language}_{config.paradigm}_train_*.bin"
     args.input_val_bin = f"{config.language}_{config.paradigm}_CORPUS/{config.language}_{config.paradigm}_val_*.bin"
 else:
-    args.input_bin = f"{cli_args.task}_{config.language}_{config.paradigm}_CORPUS/{config.language}_{config.paradigm}_train_{cli_args.cross_val_counter}_*.bin"
-    args.input_val_bin = f"{cli_args.task}_{config.language}_{config.paradigm}_CORPUS/{config.language}_{config.paradigm}_val_{cli_args.cross_val_counter}_*.bin"
+    args.input_bin = f"{cli_args.task}_{config.language}_{config.paradigm}_train_{cli_args.cross_val_counter}_*.bin"
+    args.input_val_bin = f"{cli_args.task}_{config.language}_{config.paradigm}_val_{cli_args.cross_val_counter}_*.bin"
+    args.batch_size = 1
+    args.sequence_length = 64
+    args.num_iterations = 128
+    args.val_loss_every = 6
+    args.val_tokens = 1920
 
 args.input_bin = os.path.join(cli_args.data_path, args.input_bin)
 args.input_val_bin = os.path.join(cli_args.data_path, args.input_val_bin)
@@ -129,6 +136,7 @@ model = GPT(GPTConfig(vocab_size=config.vocab_size, n_layer=12, n_head=6, n_embd
 if not cli_args.pretraining:
     state_dict = torch.load(cli_args.weights_path)
     model.load_state_dict({k.replace('_orig_mod.', ''): v for k, v in torch.load(cli_args.weights_path, map_location="cpu")["model"].items()})
+    print("loaded model")
 
 model = model.cuda().bfloat16()
 for m in model.modules():
@@ -222,7 +230,7 @@ for step in range(args.num_iterations + 1):
         if cli_args.pretraining:
             torch.save(log, os.path.join(cli_args.out_path, f"{config.language}_{config.paradigm}_{step}.pth"))
         else:
-            torch.save(log, os.path.join(cli_args.output_path, f"{config.language}_{config.paradigm}_{step}_finetuned.pth"))
+            torch.save(log, os.path.join(cli_args.out_path, f"{config.language}_{config.paradigm}_{step}_finetuned.pth"))
         # start the clock again
         torch.cuda.synchronize()
         t0 = time.time()
@@ -250,6 +258,8 @@ for step in range(args.num_iterations + 1):
         else: # just sync on the last step
             # forward pass
             loss = model(x, y, attn_blocksize=attn_blocksize)
+            if master_process:
+                wandb.log({'trainloss': loss})
             # advance the dataset for the next batch
             x, y = train_loader.next_batch()
             # backward pass
@@ -281,7 +291,7 @@ if cli_args.pretraining:
     torch.save(log, os.path.join(cli_args.out_path, f"{config.language}_{config.paradigm}.pth"))
 else:
     log = dict(model=raw_model.state_dict(), optimizers=[opt.state_dict() for opt in optimizers])
-    torch.save(log, os.path.join(cli_args.out_path, f"{config.language}_{config.paradigm}_finetuned.pth"))
+    torch.save(log, os.path.join(cli_args.out_path, f"{cli_args.task}_{config.language}_{config.paradigm}_finetuned.pth"))
 
 # -------------------------------------------------------------------------
 # clean up nice
@@ -290,7 +300,7 @@ dist.destroy_process_group()
 if master_process:
     SENDER = "tiyliu@ucdavis.edu"
     RECIPIENT = "tiyliu@ucdavis.edu"
-    SUBJECT = f"Training completed for {args.language}_{args.paradigm}"
+    SUBJECT = f"Training completed for {config.language}_{config.paradigm}"
     BODY = "Training done."
     APP_PASSWORD = email_password  # 16-character app password (no spaces when using)
 

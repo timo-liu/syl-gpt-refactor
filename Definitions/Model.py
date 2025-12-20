@@ -1,12 +1,19 @@
 # region imports
 import torch
 from torch import nn
+import os
+import json
+
+import torch.distributed as dist
+import glob
 import torch.nn.functional as F
 # FlexAttention
+import numpy as np
 from torch.nn.attention.flex_attention import (
     flex_attention,
     create_block_mask,
 )
+from dataclasses import dataclass
 # endregion imports
 
 # region Config
@@ -16,6 +23,8 @@ class GPTConfig:
     n_layer : int = 12
     n_head : int = 6 # head dim 128 suggested by @Grad62304977
     n_embd : int = 768
+    language : str = ""
+    paradigm : str = ""
 
     @classmethod
     def load(cls, config_path):

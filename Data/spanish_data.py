@@ -250,6 +250,8 @@ if __name__ == "__main__":
         if not os.path.exists(BIN_PATH):
             os.makedirs(BIN_PATH)
 
+    #main(DATA_PATH)
+
     stored_path = f"{DATA_PATH}/fluentwithstories_spanish.json"
     BIN_PATH = os.path.join(DATA_PATH, "bins")
     unpack_and_syllabize(stored_path, BIN_PATH, tokenizer, args.cross_val_sets)

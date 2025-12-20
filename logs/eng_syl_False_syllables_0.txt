@@ -1,0 +1,598 @@
+Running pytorch 2.9.1+cu128 compiled for CUDA 12.8
+nvidia-smi:
+Mon Dec 15 16:31:36 2025       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.274.02             Driver Version: 535.274.02   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A100 80GB PCIe          Off | 00000001:00:00.0 Off |                    0 |
+| N/A   36C    P0              78W / 300W |    422MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+|   1  NVIDIA A100 80GB PCIe          Off | 00000002:00:00.0 Off |                    0 |
+| N/A   36C    P0              75W / 300W |    422MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|    0   N/A  N/A     13854      C   ...-refactor/Training/.venv/bin/python      414MiB |
+|    1   N/A  N/A     13855      C   ...-refactor/Training/.venv/bin/python      414MiB |
++---------------------------------------------------------------------------------------+
+
+====================================================================================================
+Running pytorch 2.9.1+cu128 compiled for CUDA 12.8
+nvidia-smi:
+Mon Dec 15 16:32:31 2025       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.274.02             Driver Version: 535.274.02   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A100 80GB PCIe          Off | 00000001:00:00.0 Off |                    0 |
+| N/A   35C    P0              75W / 300W |    422MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+|   1  NVIDIA A100 80GB PCIe          Off | 00000002:00:00.0 Off |                    0 |
+| N/A   36C    P0              79W / 300W |    422MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|    0   N/A  N/A     14089      C   ...-refactor/Training/.venv/bin/python      414MiB |
+|    1   N/A  N/A     14090      C   ...-refactor/Training/.venv/bin/python      414MiB |
++---------------------------------------------------------------------------------------+
+
+====================================================================================================
+Running pytorch 2.9.1+cu128 compiled for CUDA 12.8
+nvidia-smi:
+Mon Dec 15 16:33:02 2025       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.274.02             Driver Version: 535.274.02   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A100 80GB PCIe          Off | 00000001:00:00.0 Off |                    0 |
+| N/A   35C    P0              75W / 300W |    422MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+|   1  NVIDIA A100 80GB PCIe          Off | 00000002:00:00.0 Off |                    0 |
+| N/A   36C    P0              77W / 300W |    422MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|    0   N/A  N/A     14317      C   ...-refactor/Training/.venv/bin/python      414MiB |
+|    1   N/A  N/A     14318      C   ...-refactor/Training/.venv/bin/python      414MiB |
++---------------------------------------------------------------------------------------+
+
+====================================================================================================
+Running pytorch 2.9.1+cu128 compiled for CUDA 12.8
+nvidia-smi:
+Mon Dec 15 16:33:38 2025       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.274.02             Driver Version: 535.274.02   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A100 80GB PCIe          Off | 00000001:00:00.0 Off |                    0 |
+| N/A   36C    P0              75W / 300W |    422MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+|   1  NVIDIA A100 80GB PCIe          Off | 00000002:00:00.0 Off |                    0 |
+| N/A   36C    P0              55W / 300W |      3MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|    0   N/A  N/A     14536      C   ...-refactor/Training/.venv/bin/python      414MiB |
++---------------------------------------------------------------------------------------+
+
+====================================================================================================
+Running pytorch 2.9.1+cu128 compiled for CUDA 12.8
+nvidia-smi:
+Mon Dec 15 16:36:29 2025       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.274.02             Driver Version: 535.274.02   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A100 80GB PCIe          Off | 00000001:00:00.0 Off |                    0 |
+| N/A   35C    P0              76W / 300W |    422MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+|   1  NVIDIA A100 80GB PCIe          Off | 00000002:00:00.0 Off |                    0 |
+| N/A   36C    P0              55W / 300W |      3MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|    0   N/A  N/A     15098      C   ...-refactor/Training/.venv/bin/python      414MiB |
++---------------------------------------------------------------------------------------+
+
+====================================================================================================
+Training DataLoader: total number of tokens: 17115 across 1 files
+Validation DataLoader: total number of tokens: 1923 across 1 files
+====================================================================================================
+Running pytorch 2.9.1+cu128 compiled for CUDA 12.8
+nvidia-smi:
+Mon Dec 15 16:45:20 2025       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.274.02             Driver Version: 535.274.02   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A100 80GB PCIe          Off | 00000001:00:00.0 Off |                    0 |
+| N/A   44C    P0              83W / 300W |    422MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+|   1  NVIDIA A100 80GB PCIe          Off | 00000002:00:00.0 Off |                    0 |
+| N/A   35C    P0              55W / 300W |      3MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|    0   N/A  N/A     17550      C   ...-refactor/Training/.venv/bin/python      414MiB |
++---------------------------------------------------------------------------------------+
+
+====================================================================================================
+Training DataLoader: total number of tokens: 17115 across 1 files
+Validation DataLoader: total number of tokens: 1923 across 1 files
+====================================================================================================
+Running pytorch 2.9.1+cu128 compiled for CUDA 12.8
+nvidia-smi:
+Mon Dec 15 16:46:37 2025       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.274.02             Driver Version: 535.274.02   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A100 80GB PCIe          Off | 00000001:00:00.0 Off |                    0 |
+| N/A   42C    P0              80W / 300W |    422MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+|   1  NVIDIA A100 80GB PCIe          Off | 00000002:00:00.0 Off |                    0 |
+| N/A   35C    P0              55W / 300W |      3MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|    0   N/A  N/A     18057      C   ...-refactor/Training/.venv/bin/python      414MiB |
++---------------------------------------------------------------------------------------+
+
+====================================================================================================
+Training DataLoader: total number of tokens: 17115 across 1 files
+Validation DataLoader: total number of tokens: 1923 across 1 files
+====================================================================================================
+Running pytorch 2.9.1+cu128 compiled for CUDA 12.8
+nvidia-smi:
+Mon Dec 15 16:49:57 2025       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.274.02             Driver Version: 535.274.02   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A100 80GB PCIe          Off | 00000001:00:00.0 Off |                    0 |
+| N/A   43C    P0              80W / 300W |    422MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+|   1  NVIDIA A100 80GB PCIe          Off | 00000002:00:00.0 Off |                    0 |
+| N/A   35C    P0              55W / 300W |      3MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|    0   N/A  N/A     18710      C   ...-refactor/Training/.venv/bin/python      414MiB |
++---------------------------------------------------------------------------------------+
+
+====================================================================================================
+Running pytorch 2.9.1+cu128 compiled for CUDA 12.8
+nvidia-smi:
+Mon Dec 15 16:50:44 2025       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.274.02             Driver Version: 535.274.02   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A100 80GB PCIe          Off | 00000001:00:00.0 Off |                    0 |
+| N/A   40C    P0              79W / 300W |    422MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+|   1  NVIDIA A100 80GB PCIe          Off | 00000002:00:00.0 Off |                    0 |
+| N/A   36C    P0              55W / 300W |      3MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|    0   N/A  N/A     18978      C   ...-refactor/Training/.venv/bin/python      414MiB |
++---------------------------------------------------------------------------------------+
+
+====================================================================================================
+Training DataLoader: total number of tokens: 17115 across 1 files
+Validation DataLoader: total number of tokens: 1923 across 1 files
+====================================================================================================
+step:0/36 val_loss:5.8619 train_time:0ms step_avg:nanms
+Running pytorch 2.9.1+cu128 compiled for CUDA 12.8
+nvidia-smi:
+Mon Dec 15 16:52:26 2025       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.274.02             Driver Version: 535.274.02   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A100 80GB PCIe          Off | 00000001:00:00.0 Off |                    0 |
+| N/A   38C    P0              77W / 300W |    422MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+|   1  NVIDIA A100 80GB PCIe          Off | 00000002:00:00.0 Off |                    0 |
+| N/A   35C    P0              55W / 300W |      3MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|    0   N/A  N/A     20845      C   ...-refactor/Training/.venv/bin/python      414MiB |
++---------------------------------------------------------------------------------------+
+
+====================================================================================================
+Training DataLoader: total number of tokens: 17115 across 1 files
+Validation DataLoader: total number of tokens: 1923 across 1 files
+====================================================================================================
+step:0/36 val_loss:5.8619 train_time:0ms step_avg:nanms
+step:1/36 train_loss:6.6812 train_time:21880ms step_avg:nanms
+step:2/36 train_loss:6.5544 train_time:21969ms step_avg:nanms
+step:3/36 train_loss:5.0351 train_time:22054ms step_avg:nanms
+step:4/36 train_loss:5.3507 train_time:22139ms step_avg:nanms
+step:5/36 train_loss:5.9089 train_time:22224ms step_avg:nanms
+step:6/36 train_loss:5.4153 train_time:22308ms step_avg:nanms
+step:6/36 val_loss:5.8604 train_time:22309ms step_avg:nanms
+step:7/36 train_loss:6.3620 train_time:22392ms step_avg:nanms
+step:8/36 train_loss:6.2980 train_time:22475ms step_avg:nanms
+step:9/36 train_loss:5.7348 train_time:22561ms step_avg:nanms
+step:10/36 train_loss:5.1465 train_time:22644ms step_avg:nanms
+step:11/36 train_loss:5.1930 train_time:87ms step_avg:nanms
+step:12/36 train_loss:6.5800 train_time:174ms step_avg:nanms
+step:12/36 val_loss:5.8578 train_time:175ms step_avg:87.38ms
+step:13/36 train_loss:5.6314 train_time:261ms step_avg:87.04ms
+step:14/36 train_loss:6.0300 train_time:350ms step_avg:87.43ms
+step:15/36 train_loss:5.9540 train_time:443ms step_avg:88.53ms
+step:16/36 train_loss:6.5315 train_time:536ms step_avg:89.42ms
+step:17/36 train_loss:7.3068 train_time:630ms step_avg:90.04ms
+step:18/36 train_loss:5.1613 train_time:723ms step_avg:90.37ms
+step:18/36 val_loss:5.8524 train_time:724ms step_avg:90.46ms
+step:19/36 train_loss:6.9339 train_time:816ms step_avg:90.70ms
+step:20/36 train_loss:5.9121 train_time:909ms step_avg:90.90ms
+step:21/36 train_loss:6.4067 train_time:1001ms step_avg:91.04ms
+step:22/36 train_loss:5.5928 train_time:1094ms step_avg:91.17ms
+step:23/36 train_loss:5.9272 train_time:1187ms step_avg:91.30ms
+step:24/36 train_loss:5.1608 train_time:1279ms step_avg:91.38ms
+step:24/36 val_loss:5.8503 train_time:1280ms step_avg:91.43ms
+step:25/36 train_loss:5.7816 train_time:1372ms step_avg:91.46ms
+step:26/36 train_loss:4.3781 train_time:1464ms step_avg:91.53ms
+step:27/36 train_loss:5.3971 train_time:1558ms step_avg:91.62ms
+step:28/36 train_loss:7.3315 train_time:1650ms step_avg:91.65ms
+step:29/36 train_loss:5.8133 train_time:1743ms step_avg:91.72ms
+step:30/36 train_loss:7.0179 train_time:1835ms step_avg:91.77ms
+step:30/36 val_loss:5.8499 train_time:1836ms step_avg:91.80ms
+step:31/36 train_loss:6.4680 train_time:1920ms step_avg:91.43ms
+step:32/36 train_loss:5.7100 train_time:2003ms step_avg:91.06ms
+step:33/36 train_loss:6.7895 train_time:2087ms step_avg:90.74ms
+step:34/36 train_loss:5.9535 train_time:2171ms step_avg:90.46ms
+step:35/36 train_loss:5.1081 train_time:2254ms step_avg:90.18ms
+step:36/36 train_loss:5.9690 train_time:2337ms step_avg:89.89ms
+step:36/36 val_loss:5.8491 train_time:2338ms step_avg:89.91ms
+Running pytorch 2.9.1+cu128 compiled for CUDA 12.8
+nvidia-smi:
+Mon Dec 15 16:53:34 2025       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.274.02             Driver Version: 535.274.02   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A100 80GB PCIe          Off | 00000001:00:00.0 Off |                    0 |
+| N/A   38C    P0              77W / 300W |    422MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+|   1  NVIDIA A100 80GB PCIe          Off | 00000002:00:00.0 Off |                    0 |
+| N/A   35C    P0              55W / 300W |      3MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|    0   N/A  N/A     23184      C   ...-refactor/Training/.venv/bin/python      414MiB |
++---------------------------------------------------------------------------------------+
+
+====================================================================================================
+Training DataLoader: total number of tokens: 17115 across 1 files
+Validation DataLoader: total number of tokens: 1923 across 1 files
+====================================================================================================
+step:0/36 val_loss:5.8619 train_time:0ms step_avg:nanms
+step:1/36 train_loss:6.6812 train_time:21726ms step_avg:nanms
+step:2/36 train_loss:6.5544 train_time:21813ms step_avg:nanms
+step:3/36 train_loss:5.0351 train_time:21896ms step_avg:nanms
+step:4/36 train_loss:5.3507 train_time:21979ms step_avg:nanms
+step:5/36 train_loss:5.9089 train_time:22061ms step_avg:nanms
+step:6/36 train_loss:5.4153 train_time:22143ms step_avg:nanms
+step:6/36 val_loss:5.8604 train_time:22144ms step_avg:nanms
+step:7/36 train_loss:6.3620 train_time:22235ms step_avg:nanms
+step:8/36 train_loss:6.2980 train_time:22327ms step_avg:nanms
+step:9/36 train_loss:5.7348 train_time:22411ms step_avg:nanms
+step:10/36 train_loss:5.1465 train_time:22495ms step_avg:nanms
+step:11/36 train_loss:5.1930 train_time:87ms step_avg:nanms
+step:12/36 train_loss:6.5800 train_time:174ms step_avg:nanms
+step:12/36 val_loss:5.8578 train_time:175ms step_avg:87.43ms
+step:13/36 train_loss:5.6314 train_time:259ms step_avg:86.35ms
+step:14/36 train_loss:6.0300 train_time:342ms step_avg:85.59ms
+step:15/36 train_loss:5.9540 train_time:426ms step_avg:85.26ms
+step:16/36 train_loss:6.5315 train_time:509ms step_avg:84.77ms
+step:17/36 train_loss:7.3068 train_time:590ms step_avg:84.33ms
+step:18/36 train_loss:5.1613 train_time:672ms step_avg:84.00ms
+step:18/36 val_loss:5.8524 train_time:673ms step_avg:84.07ms
+step:19/36 train_loss:6.9339 train_time:755ms step_avg:83.93ms
+step:20/36 train_loss:5.9121 train_time:838ms step_avg:83.79ms
+step:21/36 train_loss:6.4067 train_time:920ms step_avg:83.61ms
+step:22/36 train_loss:5.5928 train_time:1001ms step_avg:83.43ms
+step:23/36 train_loss:5.9272 train_time:1085ms step_avg:83.47ms
+step:24/36 train_loss:5.1608 train_time:1167ms step_avg:83.35ms
+step:24/36 val_loss:5.8503 train_time:1167ms step_avg:83.38ms
+step:25/36 train_loss:5.7816 train_time:1249ms step_avg:83.26ms
+step:26/36 train_loss:4.3781 train_time:1331ms step_avg:83.17ms
+step:27/36 train_loss:5.3971 train_time:1413ms step_avg:83.09ms
+step:28/36 train_loss:7.3315 train_time:1494ms step_avg:83.00ms
+step:29/36 train_loss:5.8133 train_time:1576ms step_avg:82.97ms
+step:30/36 train_loss:7.0179 train_time:1659ms step_avg:82.93ms
+step:30/36 val_loss:5.8499 train_time:1659ms step_avg:82.96ms
+step:31/36 train_loss:6.4680 train_time:1741ms step_avg:82.92ms
+step:32/36 train_loss:5.7100 train_time:1824ms step_avg:82.90ms
+step:33/36 train_loss:6.7895 train_time:1906ms step_avg:82.88ms
+step:34/36 train_loss:5.9535 train_time:1988ms step_avg:82.81ms
+step:35/36 train_loss:5.1081 train_time:2072ms step_avg:82.87ms
+step:36/36 train_loss:5.9690 train_time:2153ms step_avg:82.82ms
+step:36/36 val_loss:5.8491 train_time:2154ms step_avg:82.85ms
+Running pytorch 2.9.1+cu128 compiled for CUDA 12.8
+nvidia-smi:
+Mon Dec 15 16:54:51 2025       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.274.02             Driver Version: 535.274.02   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A100 80GB PCIe          Off | 00000001:00:00.0 Off |                    0 |
+| N/A   39C    P0              78W / 300W |    422MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+|   1  NVIDIA A100 80GB PCIe          Off | 00000002:00:00.0 Off |                    0 |
+| N/A   36C    P0              56W / 300W |      3MiB / 81920MiB |      0%      Default |
+|                                         |                      |             Disabled |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|    0   N/A  N/A     23880      C   ...-refactor/Training/.venv/bin/python      414MiB |
++---------------------------------------------------------------------------------------+
+
+====================================================================================================
+Training DataLoader: total number of tokens: 17115 across 1 files
+Validation DataLoader: total number of tokens: 1923 across 1 files
+====================================================================================================
+step:0/128 val_loss:5.8619 train_time:0ms step_avg:nanms
+step:1/128 train_loss:6.6812 train_time:22344ms step_avg:nanms
+step:2/128 train_loss:6.5539 train_time:22434ms step_avg:nanms
+step:3/128 train_loss:5.0331 train_time:22520ms step_avg:nanms
+step:4/128 train_loss:5.3416 train_time:22607ms step_avg:nanms
+step:5/128 train_loss:5.9011 train_time:22691ms step_avg:nanms
+step:6/128 train_loss:5.4047 train_time:22774ms step_avg:nanms
+step:6/128 val_loss:5.8474 train_time:22775ms step_avg:nanms
+step:7/128 train_loss:6.3459 train_time:22859ms step_avg:nanms
+step:8/128 train_loss:6.2705 train_time:22943ms step_avg:nanms
+step:9/128 train_loss:5.7205 train_time:23027ms step_avg:nanms
+step:10/128 train_loss:5.1086 train_time:23112ms step_avg:nanms
+step:11/128 train_loss:5.1828 train_time:89ms step_avg:nanms
+step:12/128 train_loss:6.5356 train_time:174ms step_avg:nanms
+step:12/128 val_loss:5.8262 train_time:175ms step_avg:87.44ms
+step:13/128 train_loss:5.5906 train_time:257ms step_avg:85.74ms
+step:14/128 train_loss:5.9808 train_time:340ms step_avg:85.07ms
+step:15/128 train_loss:5.9200 train_time:423ms step_avg:84.66ms
+step:16/128 train_loss:6.4891 train_time:508ms step_avg:84.63ms
+step:17/128 train_loss:7.2676 train_time:592ms step_avg:84.51ms
+step:18/128 train_loss:5.1212 train_time:675ms step_avg:84.33ms
+step:18/128 val_loss:5.8121 train_time:675ms step_avg:84.40ms
+step:19/128 train_loss:6.8742 train_time:762ms step_avg:84.71ms
+step:20/128 train_loss:5.8505 train_time:847ms step_avg:84.69ms
+step:21/128 train_loss:6.3491 train_time:930ms step_avg:84.54ms
+step:22/128 train_loss:5.5382 train_time:1016ms step_avg:84.68ms
+step:23/128 train_loss:5.8753 train_time:1099ms step_avg:84.56ms
+step:24/128 train_loss:5.1137 train_time:1182ms step_avg:84.43ms
+step:24/128 val_loss:5.7934 train_time:1183ms step_avg:84.47ms
+step:25/128 train_loss:5.6925 train_time:1265ms step_avg:84.32ms
+step:26/128 train_loss:4.3069 train_time:1348ms step_avg:84.24ms
+step:27/128 train_loss:5.3206 train_time:1431ms step_avg:84.18ms
+step:28/128 train_loss:7.2501 train_time:1514ms step_avg:84.11ms
+step:29/128 train_loss:5.7712 train_time:1598ms step_avg:84.10ms
+step:30/128 train_loss:6.9408 train_time:1681ms step_avg:84.03ms
+step:30/128 val_loss:5.7818 train_time:1681ms step_avg:84.06ms
+step:31/128 train_loss:6.4046 train_time:1764ms step_avg:84.02ms
+step:32/128 train_loss:5.6322 train_time:1848ms step_avg:83.99ms
+step:33/128 train_loss:6.7248 train_time:1934ms step_avg:84.09ms
+step:34/128 train_loss:5.8895 train_time:2017ms step_avg:84.06ms
+step:35/128 train_loss:5.0419 train_time:2101ms step_avg:84.03ms
+step:36/128 train_loss:5.8829 train_time:2189ms step_avg:84.20ms
+step:36/128 val_loss:5.7668 train_time:2190ms step_avg:84.21ms
+step:37/128 train_loss:4.9226 train_time:2272ms step_avg:84.15ms
+step:38/128 train_loss:4.6164 train_time:2355ms step_avg:84.12ms
+step:39/128 train_loss:4.5289 train_time:2440ms step_avg:84.13ms
+step:40/128 train_loss:6.1122 train_time:2524ms step_avg:84.15ms
+step:41/128 train_loss:5.1909 train_time:2607ms step_avg:84.11ms
+step:42/128 train_loss:5.9160 train_time:2691ms step_avg:84.08ms
+step:42/128 val_loss:5.7550 train_time:2691ms step_avg:84.11ms
+step:43/128 train_loss:6.4838 train_time:2774ms step_avg:84.07ms
+step:44/128 train_loss:5.8211 train_time:2861ms step_avg:84.14ms
+step:45/128 train_loss:5.8288 train_time:2947ms step_avg:84.19ms
+step:46/128 train_loss:5.9978 train_time:3033ms step_avg:84.25ms
+step:47/128 train_loss:5.1350 train_time:3116ms step_avg:84.21ms
+step:48/128 train_loss:5.8500 train_time:3199ms step_avg:84.17ms
+step:48/128 val_loss:5.7460 train_time:3199ms step_avg:84.19ms
+step:49/128 train_loss:6.4558 train_time:3281ms step_avg:84.13ms
+step:50/128 train_loss:4.7679 train_time:3364ms step_avg:84.11ms
+step:51/128 train_loss:5.5030 train_time:3446ms step_avg:84.06ms
+step:52/128 train_loss:4.8054 train_time:3528ms step_avg:84.01ms
+step:53/128 train_loss:5.2250 train_time:3611ms step_avg:83.97ms
+step:54/128 train_loss:5.6134 train_time:3696ms step_avg:84.00ms
+step:54/128 val_loss:5.7376 train_time:3696ms step_avg:84.01ms
+step:55/128 train_loss:5.7112 train_time:3779ms step_avg:83.98ms
+step:56/128 train_loss:6.2289 train_time:3863ms step_avg:83.97ms
+step:57/128 train_loss:4.6176 train_time:3946ms step_avg:83.95ms
+step:58/128 train_loss:4.3249 train_time:4029ms step_avg:83.95ms
+step:59/128 train_loss:5.8314 train_time:4113ms step_avg:83.93ms
+step:60/128 train_loss:5.0468 train_time:4196ms step_avg:83.91ms
+step:60/128 val_loss:5.7270 train_time:4196ms step_avg:83.92ms
+step:61/128 train_loss:4.5940 train_time:4281ms step_avg:83.94ms
+step:62/128 train_loss:5.9129 train_time:4367ms step_avg:83.98ms
+step:63/128 train_loss:5.8143 train_time:4452ms step_avg:84.00ms
+step:64/128 train_loss:5.3583 train_time:4536ms step_avg:84.00ms
+step:65/128 train_loss:6.0549 train_time:4619ms step_avg:83.99ms
+step:66/128 train_loss:5.3272 train_time:4702ms step_avg:83.97ms
+step:66/128 val_loss:5.7184 train_time:4703ms step_avg:83.97ms
+step:67/128 train_loss:4.3610 train_time:4784ms step_avg:83.94ms
+step:68/128 train_loss:4.7685 train_time:4870ms step_avg:83.96ms
+step:69/128 train_loss:6.0000 train_time:4953ms step_avg:83.95ms
+step:70/128 train_loss:6.3506 train_time:5037ms step_avg:83.95ms
+step:71/128 train_loss:5.0132 train_time:5120ms step_avg:83.94ms
+step:72/128 train_loss:4.7886 train_time:5204ms step_avg:83.94ms
+step:72/128 val_loss:5.7106 train_time:5205ms step_avg:83.94ms
+step:73/128 train_loss:6.0257 train_time:5290ms step_avg:83.96ms
+step:74/128 train_loss:5.6724 train_time:5374ms step_avg:83.96ms
+step:75/128 train_loss:5.2686 train_time:5457ms step_avg:83.95ms
+step:76/128 train_loss:6.2213 train_time:5541ms step_avg:83.95ms
+step:77/128 train_loss:4.9832 train_time:5624ms step_avg:83.94ms
+step:78/128 train_loss:5.2579 train_time:5707ms step_avg:83.92ms
+step:78/128 val_loss:5.7048 train_time:5707ms step_avg:83.93ms
+step:79/128 train_loss:5.0578 train_time:5790ms step_avg:83.91ms
+step:80/128 train_loss:4.9552 train_time:5873ms step_avg:83.90ms
+step:81/128 train_loss:5.3539 train_time:5957ms step_avg:83.90ms
+step:82/128 train_loss:6.2391 train_time:6039ms step_avg:83.88ms
+step:83/128 train_loss:5.0549 train_time:6122ms step_avg:83.86ms
+step:84/128 train_loss:5.0229 train_time:6205ms step_avg:83.85ms
+step:84/128 val_loss:5.7004 train_time:6206ms step_avg:83.86ms
+step:85/128 train_loss:6.9389 train_time:6288ms step_avg:83.84ms
+step:86/128 train_loss:3.7590 train_time:6374ms step_avg:83.86ms
+step:87/128 train_loss:5.7240 train_time:6466ms step_avg:83.98ms
+step:88/128 train_loss:6.5179 train_time:6555ms step_avg:84.04ms
+step:89/128 train_loss:5.8357 train_time:6640ms step_avg:84.05ms
+step:90/128 train_loss:6.5795 train_time:6723ms step_avg:84.04ms
+step:90/128 val_loss:5.6931 train_time:6724ms step_avg:84.05ms
+step:91/128 train_loss:5.2134 train_time:6808ms step_avg:84.05ms
+step:92/128 train_loss:5.7480 train_time:6893ms step_avg:84.06ms
+step:93/128 train_loss:5.8564 train_time:6976ms step_avg:84.05ms
+step:94/128 train_loss:5.7456 train_time:7059ms step_avg:84.04ms
+step:95/128 train_loss:5.5758 train_time:7144ms step_avg:84.05ms
+step:96/128 train_loss:5.8992 train_time:7228ms step_avg:84.05ms
+step:96/128 val_loss:5.6883 train_time:7229ms step_avg:84.05ms
+step:97/128 train_loss:5.4847 train_time:7312ms step_avg:84.05ms
+step:98/128 train_loss:7.2931 train_time:7395ms step_avg:84.04ms
+step:99/128 train_loss:5.2784 train_time:7480ms step_avg:84.05ms
+step:100/128 train_loss:6.3931 train_time:7563ms step_avg:84.04ms
+step:101/128 train_loss:5.2853 train_time:7647ms step_avg:84.03ms
+step:102/128 train_loss:6.0774 train_time:7730ms step_avg:84.02ms
+step:102/128 val_loss:5.6848 train_time:7730ms step_avg:84.02ms
+step:103/128 train_loss:6.2424 train_time:7813ms step_avg:84.01ms
+step:104/128 train_loss:5.5979 train_time:7898ms step_avg:84.02ms
+step:105/128 train_loss:6.2184 train_time:7982ms step_avg:84.02ms
+step:106/128 train_loss:4.8996 train_time:8065ms step_avg:84.02ms
+step:107/128 train_loss:6.6384 train_time:8149ms step_avg:84.01ms
+step:108/128 train_loss:4.1963 train_time:8233ms step_avg:84.01ms
+step:108/128 val_loss:5.6816 train_time:8233ms step_avg:84.01ms
+step:109/128 train_loss:5.7846 train_time:8316ms step_avg:84.00ms
+step:110/128 train_loss:4.9203 train_time:8400ms step_avg:84.00ms
+step:111/128 train_loss:4.8397 train_time:8484ms step_avg:84.00ms
+step:112/128 train_loss:6.0412 train_time:8567ms step_avg:83.99ms
+step:113/128 train_loss:4.9804 train_time:8651ms step_avg:83.99ms
+step:114/128 train_loss:7.4888 train_time:8735ms step_avg:83.99ms
+step:114/128 val_loss:5.6803 train_time:8735ms step_avg:83.99ms
+step:115/128 train_loss:5.8396 train_time:8818ms step_avg:83.98ms
+step:116/128 train_loss:5.6903 train_time:8906ms step_avg:84.02ms
+step:117/128 train_loss:5.1258 train_time:8990ms step_avg:84.02ms
+step:118/128 train_loss:5.2745 train_time:9075ms step_avg:84.02ms
+step:119/128 train_loss:4.8588 train_time:9159ms step_avg:84.03ms
+step:120/128 train_loss:6.4228 train_time:9242ms step_avg:84.02ms
+step:120/128 val_loss:5.6790 train_time:9243ms step_avg:84.02ms
+step:121/128 train_loss:4.0255 train_time:9328ms step_avg:84.04ms
+step:122/128 train_loss:6.7716 train_time:9411ms step_avg:84.03ms
+step:123/128 train_loss:4.4213 train_time:9494ms step_avg:84.02ms
+step:124/128 train_loss:6.0392 train_time:9577ms step_avg:84.01ms
+step:125/128 train_loss:6.1130 train_time:9660ms step_avg:84.00ms
+step:126/128 train_loss:6.0034 train_time:9742ms step_avg:83.98ms
+step:126/128 val_loss:5.6780 train_time:9743ms step_avg:83.99ms
+step:127/128 train_loss:5.6305 train_time:9824ms step_avg:83.97ms
+step:128/128 train_loss:4.4529 train_time:9907ms step_avg:83.96ms
+step:128/128 val_loss:5.6780 train_time:9908ms step_avg:83.96ms

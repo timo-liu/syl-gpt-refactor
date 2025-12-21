@@ -48,7 +48,7 @@ tot = 0
 pad_to_multiple = 16
 
 for s in splits:
-	if len(s) <= 2:
+	if len(s) <= 3:
 		continue
 
 	inp = s[:-1]

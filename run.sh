@@ -1,5 +1,5 @@
-/mnt/data/syl-gpt-refactor/Training/.venv/bin/torchrun --nproc_per_node=2 -m Training.train "/mnt/data/syl-gpt-refactor/Configs/trained_eng_syl_config.json" "/mnt/data/data" "/mnt/data/weights" --pretraining True
-/mnt/data/syl-gpt-refactor/Training/.venv/bin/torchrun --nproc_per_node=2 -m Training.train "/mnt/data/syl-gpt-refactor/Configs/trained_eng_bpe_config.json" "/mnt/data/data" "/mnt/data/weights" --pretraining True
-/mnt/data/syl-gpt-refactor/Training/.venv/bin/torchrun --nproc_per_node=2 -m Training.train "/mnt/data/syl-gpt-refactor/Configs/trained_span_uni_config.json" "/mnt/data/data" "/mnt/data/weights" --pretraining True
+# /mnt/data/syl-gpt-refactor/Training/.venv/bin/torchrun --nproc_per_node=2 -m Training.train "/mnt/data/syl-gpt-refactor/Configs/trained_eng_syl_config.json" "/mnt/data/data" "/mnt/data/weights" --pretraining True
+# /mnt/data/syl-gpt-refactor/Training/.venv/bin/torchrun --nproc_per_node=2 -m Training.train "/mnt/data/syl-gpt-refactor/Configs/trained_eng_bpe_config.json" "/mnt/data/data" "/mnt/data/weights" --pretraining True
+# /mnt/data/syl-gpt-refactor/Training/.venv/bin/torchrun --nproc_per_node=2 -m Training.train "/mnt/data/syl-gpt-refactor/Configs/trained_span_uni_config.json" "/mnt/data/data" "/mnt/data/weights" --pretraining True
 /mnt/data/syl-gpt-refactor/Training/.venv/bin/torchrun --nproc_per_node=2 -m Training.train "/mnt/data/syl-gpt-refactor/Configs/trained_span_syl_config.json" "/mnt/data/data" "/mnt/data/weights" --pretraining True
-/mnt/data/syl-gpt-refactor/Training/.venv/bin/torchrun --nproc_per_node=2 -m Training.train "/mnt/data/syl-gpt-refactor/Configs/trained_span_bpe_config.json" "/mnt/data/data" "/mnt/data/weights" --pretraining True
+# /mnt/data/syl-gpt-refactor/Training/.venv/bin/torchrun --nproc_per_node=2 -m Training.train "/mnt/data/syl-gpt-refactor/Configs/trained_span_bpe_config.json" "/mnt/data/data" "/mnt/data/weights" --pretraining True

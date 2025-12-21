@@ -166,8 +166,7 @@ if __name__ == "__main__":
 
     tokenizer_directory = os.path.abspath(args.tokenizers_folder)
     sys.path.insert(0, tokenizer_directory)
-    from TokenizerConfig import TokenizerConfig
-    from tokenizer import Tokenizer
+    from Tokenizer import TokenizerConfig, Tokenizer
     TOKENIZER_CONFIG = TokenizerConfig.load(args.tokenizer_config)
     tokenizer = Tokenizer(TOKENIZER_CONFIG)
     DATA_PATH = "english_data"

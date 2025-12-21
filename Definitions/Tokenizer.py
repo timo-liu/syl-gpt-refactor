@@ -192,9 +192,9 @@ class Tokenizer():
         # splitting into section that require some backbone
         if self.paradigm == "syl":
             if self.language == "eng":
-                # from eng_syl_torch import Syllabifier as S
-                # self.uses_syllabifier = True
-                # self.syllabifier = S()
+                from eng_syl_torch import Syllabifier as S
+                self.uses_syllabifier = True
+                self.syllabifier = S()
                 pass
 
         elif self.paradigm == 'morf':

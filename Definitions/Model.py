@@ -13,6 +13,8 @@ from torch.nn.attention.flex_attention import (
     flex_attention,
     create_block_mask,
 )
+flex_attention = torch.compile(flex_attention, dynamic=False)
+create_block_mask = torch.compile(create_block_mask, dynamic=False)
 from dataclasses import dataclass
 # endregion imports
 
@@ -365,7 +367,7 @@ class GPT(nn.Module):
           return causal_mask & document_mask & window_mask
 
         S = len(idx)
-        block_mask = create_block_mask(document_causal_mask, None, None, S, S, device="cuda", _compile=False)
+        block_mask = create_block_mask(document_causal_mask, None, None, S, S, device="cuda", _compile=True)
 
         # forward the GPT model itself
         x = self.transformer.wte(idx[None]) # token embeddings of shape (b, t, n_embd)

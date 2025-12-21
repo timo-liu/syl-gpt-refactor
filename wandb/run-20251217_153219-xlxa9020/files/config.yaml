@@ -1,0 +1,58 @@
+_wandb:
+    value:
+        cli_version: 0.23.1
+        e:
+            7p96obh6tqz8568o3xkrqg9su9vpfphv:
+                args:
+                    - /mnt/data/syl-gpt-refactor/Configs/trained_eng_syl_config.json
+                    - /mnt/data/data
+                    - /mnt/data/weights
+                    - --pretraining
+                    - "True"
+                cpu_count: 48
+                cpu_count_logical: 48
+                cudaVersion: "12.2"
+                disk:
+                    /:
+                        total: "155897610240"
+                        used: "91217190912"
+                email: tiyliu@ucdavis.edu
+                executable: /mnt/data/syl-gpt-refactor/Training/.venv/bin/python3
+                git:
+                    commit: 4cdf4b7ffa4a8505ad5a2811e5abd719ba3e06d5
+                    remote: https://github.com/timo-liu/syl-gpt-refactor.git
+                gpu: NVIDIA A100 80GB PCIe
+                gpu_count: 2
+                gpu_nvidia:
+                    - architecture: Ampere
+                      cudaCores: 6912
+                      memoryTotal: "85899345920"
+                      name: NVIDIA A100 80GB PCIe
+                      uuid: GPU-8d6a7e41-3d7d-5568-e02c-38e7f14e891e
+                    - architecture: Ampere
+                      cudaCores: 6912
+                      memoryTotal: "85899345920"
+                      name: NVIDIA A100 80GB PCIe
+                      uuid: GPU-ac690d21-ded4-cce4-3698-7a2ce7865a28
+                host: A100
+                memory:
+                    total: "464879493120"
+                os: Linux-6.8.0-1044-azure-x86_64-with-glibc2.35
+                program: -m Training.train
+                python: CPython 3.10.11
+                root: /mnt/data/syl-gpt-refactor
+                startedAt: "2025-12-17T15:32:19.944241Z"
+                writerId: 7p96obh6tqz8568o3xkrqg9su9vpfphv
+        m: []
+        python_version: 3.10.11
+        t:
+            "1":
+                - 1
+            "2":
+                - 1
+            "3":
+                - 13
+            "4": 3.10.11
+            "5": 0.23.1
+            "12": 0.23.1
+            "13": linux-x86_64

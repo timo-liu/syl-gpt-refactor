@@ -67,10 +67,10 @@ if cli_args.pretraining:
 else:
     args.input_bin = f"{cli_args.task}_{config.language}_{config.paradigm}_train_{cli_args.cross_val_counter}_*.bin"
     args.input_val_bin = f"{cli_args.task}_{config.language}_{config.paradigm}_val_{cli_args.cross_val_counter}_*.bin"
-    args.batch_size = 1
+    args.batch_size = 8
     args.sequence_length = 64
-    args.num_iterations = 128
-    args.val_loss_every = 6
+    args.num_iterations = 384
+    args.val_loss_every = 2
     args.val_tokens = 1920
 
 args.input_bin = os.path.join(cli_args.data_path, args.input_bin)
@@ -225,12 +225,12 @@ for step in range(args.num_iterations + 1):
         torch.cuda.synchronize()
         training_time_ms += 1000 * (time.time() - t0)
         # save the state of the training process
-        log = dict(step=step, code="", model=raw_model.state_dict(), optimizers=[opt.state_dict() for opt in optimizers])
+        # log = dict(step=step, code="", model=raw_model.state_dict(), optimizers=[opt.state_dict() for opt in optimizers])
         # torch.save(log, 'logs/%s/state_step%06d.pt' % (run_id, step))
-        if cli_args.pretraining:
-            torch.save(log, os.path.join(cli_args.out_path, f"{config.language}_{config.paradigm}_{step}.pth"))
-        else:
-            torch.save(log, os.path.join(cli_args.out_path, f"{config.language}_{config.paradigm}_{step}_finetuned.pth"))
+        # if cli_args.pretraining:
+        #     torch.save(log, os.path.join(cli_args.out_path, f"{config.language}_{config.paradigm}_{step}.pth"))
+        # else:
+        #     torch.save(log, os.path.join(cli_args.out_path, f"{config.language}_{config.paradigm}_{step}_finetuned.pth"))
         # start the clock again
         torch.cuda.synchronize()
         t0 = time.time()
@@ -249,8 +249,6 @@ for step in range(args.num_iterations + 1):
             with model.no_sync(): # there's no need to sync gradients every accumulation step
                 # forward pass
                 loss = model(x, y, attn_blocksize=attn_blocksize)
-                if master_process:
-                    wandb.log({'trainloss': loss})
                 # advance the dataset for the next batch
                 x, y = train_loader.next_batch()
                 # backward pass
@@ -258,8 +256,6 @@ for step in range(args.num_iterations + 1):
         else: # just sync on the last step
             # forward pass
             loss = model(x, y, attn_blocksize=attn_blocksize)
-            if master_process:
-                wandb.log({'trainloss': loss})
             # advance the dataset for the next batch
             x, y = train_loader.next_batch()
             # backward pass
@@ -276,6 +272,10 @@ for step in range(args.num_iterations + 1):
         sched.step()
     # null the gradients
     model.zero_grad(set_to_none=True)
+    if master_process:
+        wandb.log(
+            {'trainloss': train_loss},
+            step=step)
     # --------------- TRAINING SECTION END -------------------
     # everything that follows now is just diagnostics, prints, logging, etc.
 
@@ -286,22 +286,23 @@ for step in range(args.num_iterations + 1):
 if master_process:
     print(f"peak memory consumption: {torch.cuda.max_memory_allocated() // 1024 // 1024} MiB")
 
-if cli_args.pretraining:
-    log = dict(model=raw_model.state_dict(), optimizers=[opt.state_dict() for opt in optimizers])
-    torch.save(log, os.path.join(cli_args.out_path, f"{config.language}_{config.paradigm}.pth"))
-else:
-    log = dict(model=raw_model.state_dict(), optimizers=[opt.state_dict() for opt in optimizers])
-    torch.save(log, os.path.join(cli_args.out_path, f"{cli_args.task}_{config.language}_{config.paradigm}_finetuned.pth"))
+if master_process:
+    if cli_args.pretraining:
+        log = dict(model=raw_model.state_dict(), optimizers=[opt.state_dict() for opt in optimizers])
+        torch.save(log, os.path.join(cli_args.out_path, f"{config.language}_{config.paradigm}_good.pth"))
+    else:
+        log = dict(model=raw_model.state_dict(), optimizers=[opt.state_dict() for opt in optimizers])
+        torch.save(log, os.path.join(cli_args.out_path, f"{cli_args.task}_{config.language}_{config.paradigm}_{cli_args.cross_val_counter}_finetuned.pth"))
 
 # -------------------------------------------------------------------------
 # clean up nice
 dist.destroy_process_group()
 
-if master_process:
-    SENDER = "tiyliu@ucdavis.edu"
-    RECIPIENT = "tiyliu@ucdavis.edu"
-    SUBJECT = f"Training completed for {config.language}_{config.paradigm}"
-    BODY = "Training done."
-    APP_PASSWORD = email_password  # 16-character app password (no spaces when using)
+# if master_process:
+#     SENDER = "tiyliu@ucdavis.edu"
+#     RECIPIENT = "tiyliu@ucdavis.edu"
+#     SUBJECT = f"Training completed for {config.language}_{config.paradigm}"
+#     BODY = "Training done."
+#     APP_PASSWORD = email_password  # 16-character app password (no spaces when using)
 
-    send_email_gmail(SENDER, RECIPIENT, SUBJECT, BODY, APP_PASSWORD)
+#     send_email_gmail(SENDER, RECIPIENT, SUBJECT, BODY, APP_PASSWORD)

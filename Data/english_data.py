@@ -22,7 +22,7 @@ def unpack_and_syllabize(stored_path : str, bin_path : str, tokenizer, cross_val
     with_syllables = []
     for s in data:
         sentence = s["Sentence"]
-        ids = tokenizer.tokenize_with_eos(sentence)
+        ids = tokenizer.tokenize(sentence)
         syllables = s["syllable_count"]
         if syllables <= 30 and syllables > 1:
             ids.insert(-1, tokenizer.vocab.get(f"<1>"))
@@ -49,7 +49,7 @@ def unpack_and_wordize(stored_path : str, bin_path : str, tokenizer, cross_val_c
     with_words = []
     for s in data:
         sentence = s["Sentence"]
-        ids = tokenizer.tokenize_with_eos(sentence)
+        ids = tokenizer.tokenize(sentence)
         wc = len(sentence.split())
         if wc <= 30 and wc > 1:
             ids.insert(-1, tokenizer.vocab.get(f"<1>"))
@@ -166,8 +166,7 @@ if __name__ == "__main__":
 
     tokenizer_directory = os.path.abspath(args.tokenizers_folder)
     sys.path.insert(0, tokenizer_directory)
-    from TokenizerConfig import TokenizerConfig
-    from tokenizer import Tokenizer
+    from Tokenizer import TokenizerConfig, Tokenizer
     TOKENIZER_CONFIG = TokenizerConfig.load(args.tokenizer_config)
     tokenizer = Tokenizer(TOKENIZER_CONFIG)
     DATA_PATH = "english_data"

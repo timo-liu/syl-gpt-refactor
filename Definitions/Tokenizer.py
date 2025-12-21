@@ -368,7 +368,7 @@ class Tokenizer():
         assert not self.trainable, "This needs to be trained, or load a tokenizer with a vocab"
         if self.paradigm == "syl" and self.language == "eng":
             text = re.findall(r'\s*\S+', re.sub(r'[\r\n\t]+', ' ', text).strip())
-            segmented = self.syllabifier.machine_syllabify(text, return_list=True)[0]
+            segmented = self.syllabifier.machine_syllabify(text, return_list=True)
             return [x for w in segmented for s in w for x in self.encode(s)]
         if self.paradigm == "syl" and self.language == "span":
             text = re.findall(r'\s*\S+', re.sub(r'[\r\n\t]+', ' ', text).strip())

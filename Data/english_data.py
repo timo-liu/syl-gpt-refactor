@@ -28,9 +28,19 @@ def unpack_and_syllabize(stored_path : str, bin_path : str, tokenizer, cross_val
             ids.insert(-1, tokenizer.vocab.get(f"<1>"))
             ids.insert(-1, tokenizer.vocab.get(f"<{syllables}>"))
             with_syllables.append(ids[:-1])
-
+    i2c = {i:c for c,i in tokenizer.vocab.items()}
     for x in with_syllables[:20]:
         print(x)
+
+        def join_tokens(tokens, encoding="utf-8", errors="strict"):
+            out = bytearray()
+            for t in tokens:
+                if isinstance(t, str):
+                    out.extend(t.encode(encoding, errors))
+                else:
+                    out.extend(t)
+            return bytes(out)
+        print(join_tokens([i2c[c] for c in x]))
     with_syllables = with_syllables[:COMPLETE_SET_SIZE]
     for i in range(cross_val_counter):
         test_slice = with_syllables[i*holdout_set_size:(i+1)*holdout_set_size]

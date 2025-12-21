@@ -354,9 +354,9 @@ class GPT(nn.Module):
         self.lm_head = CastedLinear(config.n_embd, config.vocab_size, bias=False)
         self.lm_head.weight.data.zero_() # @Grad62304977
 
-    def forward(self, idx, target=None, attn_blocksize=None, inference=False):
+    def forward(self, idx, target=None, attn_blocksize=None, inference=False, eos = 288):
         if not inference:
-            docs = (idx == 288).cumsum(0)
+            docs = (idx == eos).cumsum(0)
         else:
             docs = (idx == 0).cumsum(0)
             attn_blocksize = torch.tensor((128), dtype=torch.int, device='cuda')

@@ -1,2 +1,0 @@
-syllables,eng,uni,6,0.090000,9,100
-syllables,eng,uni,6,0.090000,9,100

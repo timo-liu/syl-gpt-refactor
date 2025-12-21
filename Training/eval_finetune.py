@@ -30,7 +30,7 @@ pattern = os.path.join(cli_args.bins_path, f"{cli_args.task}_{cli_args.language}
 with open(pattern, "rb") as f:
   header = np.frombuffer(f.read(256*4), dtype=np.int32)
   tokens = np.frombuffer(f.read(), dtype=np.uint16)
-  separators = (tokens >= 259) & (tokens <= 287)
+  separators = (tokens > (257 if cli_args.paradigm == "syl" else 259)) & (tokens <= (285 if cli_args.paradigm == "syl" else 287))
   sep_idx = np.where(separators)[0]
   splits = np.split(tokens, sep_idx + 1)
 

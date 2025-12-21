@@ -1,1 +1,0 @@
-syllables,eng,syl,7,0.096774,12,124

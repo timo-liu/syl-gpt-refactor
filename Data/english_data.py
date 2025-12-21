@@ -27,7 +27,10 @@ def unpack_and_syllabize(stored_path : str, bin_path : str, tokenizer, cross_val
         if syllables <= 30 and syllables > 1:
             ids.insert(-1, tokenizer.vocab.get(f"<1>"))
             ids.insert(-1, tokenizer.vocab.get(f"<{syllables}>"))
-            with_syllables.append(ids)
+            with_syllables.append(ids[:-1])
+
+    for x in with_syllables[:20]:
+        print(x)
     with_syllables = with_syllables[:COMPLETE_SET_SIZE]
     for i in range(cross_val_counter):
         test_slice = with_syllables[i*holdout_set_size:(i+1)*holdout_set_size]

@@ -209,7 +209,7 @@ for step in range(args.num_iterations + 1):
         for _ in range(val_steps):
             with torch.no_grad():
                 x_val, y_val = val_loader.next_batch()
-                val_loss += model(x_val, y_val, attn_blocksize=attn_blocksize)
+                val_loss += model(x_val, y_val, attn_blocksize=attn_blocksize, eos = 286 if (config.paradigm == "syl") else 288)
         dist.all_reduce(val_loss, op=dist.ReduceOp.AVG)
         val_loss /= val_steps
         if master_process:
@@ -248,14 +248,14 @@ for step in range(args.num_iterations + 1):
         if i < train_accumulation_steps:
             with model.no_sync(): # there's no need to sync gradients every accumulation step
                 # forward pass
-                loss = model(x, y, attn_blocksize=attn_blocksize)
+                loss = model(x, y, attn_blocksize=attn_blocksize, eos = 286 if (config.paradigm == "syl") else 288)
                 # advance the dataset for the next batch
                 x, y = train_loader.next_batch()
                 # backward pass
                 loss.backward()
         else: # just sync on the last step
             # forward pass
-            loss = model(x, y, attn_blocksize=attn_blocksize)
+            loss = model(x, y, attn_blocksize=attn_blocksize, eos = 286 if (config.paradigm == "syl") else 288)
             # advance the dataset for the next batch
             x, y = train_loader.next_batch()
             # backward pass

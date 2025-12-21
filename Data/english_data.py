@@ -27,7 +27,7 @@ def unpack_and_syllabize(stored_path : str, bin_path : str, tokenizer, cross_val
         if syllables <= 30 and syllables > 1:
             ids.insert(-1, tokenizer.vocab.get(f"<1>"))
             ids.insert(-1, tokenizer.vocab.get(f"<{syllables}>"))
-            with_syllables.append(ids[:-1])
+            with_syllables.append(ids)
     i2c = {i:c for c,i in tokenizer.vocab.items()}
     for x in with_syllables[:20]:
         print(x)

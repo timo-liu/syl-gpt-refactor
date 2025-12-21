@@ -1,0 +1,1 @@
+syllables,eng,syl,8,0.117647,16,136

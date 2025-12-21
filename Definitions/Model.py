@@ -367,7 +367,7 @@ class GPT(nn.Module):
           return causal_mask & document_mask & window_mask
 
         S = len(idx)
-        block_mask = create_block_mask(document_causal_mask, None, None, S, S, device="cuda", _compile=True)
+        block_mask = create_block_mask(document_causal_mask, None, None, S, S, device="cuda", _compile=True if not inference else False)
 
         # forward the GPT model itself
         x = self.transformer.wte(idx[None]) # token embeddings of shape (b, t, n_embd)
@@ -390,9 +390,9 @@ class GPT(nn.Module):
         logits = self.lm_head(x)
         logits = 30 * torch.tanh(logits / 30) # @Grad62304977
         logits = logits.float()
-        loss = F.cross_entropy(logits.view(-1, logits.size(-1)), target.view(-1))
         if inference:
-            return logits, loss
+            return logits
         else:
+            loss = F.cross_entropy(logits.view(-1, logits.size(-1)), target.view(-1))
             return loss
 # endregion Model

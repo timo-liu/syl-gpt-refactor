@@ -30,24 +30,38 @@ pattern = os.path.join(cli_args.bins_path, f"{cli_args.task}_{cli_args.language}
 with open(pattern, "rb") as f:
   header = np.frombuffer(f.read(256*4), dtype=np.int32)
   tokens = np.frombuffer(f.read(), dtype=np.uint16)
-  separators = (tokens >= 258) & (tokens <= 287)
+  separators = (tokens >= 259) & (tokens <= 287)
   sep_idx = np.where(separators)[0]
   splits = np.split(tokens, sep_idx + 1)
+
+out_dir = "finetune_eval"
+os.makedirs(out_dir, exist_ok=True)
+
+out_file = os.path.join(
+	out_dir,
+	f"{cli_args.task}_{cli_args.language}_{cli_args.paradigm}_{cli_args.cvc}.txt"
+)
 
 hits = 0
 tot = 0
 
+pad_to_multiple = 16
+
 for s in splits:
-	if len(s) < 2:
+	if len(s) <= 2:
 		continue
 
 	inp = s[:-1]
 	target = int(s[-1])
 
-	tokens_tensor = torch.tensor(inp, dtype=torch.long, device=device).unsqueeze(0)
-	T_unpadded = tokens_tensor.size(1)
+	T_unpadded = len(inp)
+	pad_to = ((T_unpadded + pad_to_multiple - 1) // pad_to_multiple) * pad_to_multiple
+	pad_needed = pad_to - T_unpadded
 
-	with torch.no_grad():
+	tokens_tensor = torch.tensor(inp, dtype=torch.long, device=device)
+	tokens_tensor = F.pad(tokens_tensor, (0, pad_needed), value=0)
+
+	with torch.inference_mode():
 		logits = model(tokens_tensor, inference=True)
 		last_token_logits = logits[0, T_unpadded - 1, :]
 		pred = torch.argmax(last_token_logits).item()
@@ -58,4 +72,9 @@ for s in splits:
 	tot += 1
 
 acc = hits / tot if tot > 0 else 0.0
+line = f"{cli_args.task},{cli_args.language},{cli_args.paradigm},{cli_args.cvc},{acc:.6f},{hits},{tot}\n"
+
 print(f"Accuracy: {acc:.4f} ({hits}/{tot})")
+
+with open(out_file, "a") as f:
+	f.write(line)

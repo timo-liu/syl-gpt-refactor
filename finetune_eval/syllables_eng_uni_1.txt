@@ -1,0 +1,1 @@
+syllables,eng,uni,1,0.100000,10,100

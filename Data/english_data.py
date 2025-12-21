@@ -22,7 +22,7 @@ def unpack_and_syllabize(stored_path : str, bin_path : str, tokenizer, cross_val
     with_syllables = []
     for s in data:
         sentence = s["Sentence"]
-        ids = tokenizer.tokenize(sentence)
+        ids = tokenizer.tokenize_with_eos(sentence)
         syllables = s["syllable_count"]
         if syllables <= 30 and syllables > 1:
             ids.insert(-1, tokenizer.vocab.get(f"<1>"))
@@ -49,7 +49,7 @@ def unpack_and_wordize(stored_path : str, bin_path : str, tokenizer, cross_val_c
     with_words = []
     for s in data:
         sentence = s["Sentence"]
-        ids = tokenizer.tokenize(sentence)
+        ids = tokenizer.tokenize_with_eos(sentence)
         wc = len(sentence.split())
         if wc <= 30 and wc > 1:
             ids.insert(-1, tokenizer.vocab.get(f"<1>"))

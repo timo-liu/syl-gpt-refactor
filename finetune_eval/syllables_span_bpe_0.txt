@@ -1,0 +1,1 @@
+syllables,span,bpe,0,0.134021,13,97

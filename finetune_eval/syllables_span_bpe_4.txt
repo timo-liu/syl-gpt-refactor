@@ -1,0 +1,1 @@
+syllables,span,bpe,4,0.063158,6,95

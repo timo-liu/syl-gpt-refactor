@@ -69,7 +69,7 @@ else:
     args.input_val_bin = f"{cli_args.task}_{config.language}_{config.paradigm}_val_{cli_args.cross_val_counter}_*.bin"
     args.batch_size = 8
     args.sequence_length = 64
-    args.num_iterations = 384
+    args.num_iterations = 256
     args.val_loss_every = 2
     args.val_tokens = 1920
 
@@ -156,7 +156,7 @@ enable_math_sdp(False)
 
 # init the optimizer(s)
 optimizer1 = torch.optim.Adam([raw_model.transformer.wte.weight], lr=0.6 if cli_args.pretraining else 0.006,   betas=(0.8, 0.95), fused=True)
-optimizer2 = torch.optim.Adam([raw_model.lm_head.weight],         lr=0.008 if cli_args.pretraining else 0.0008, betas=(0.8, 0.95), fused=True)
+optimizer2 = torch.optim.Adam([raw_model.lm_head.weight],         lr=0.008 if cli_args.pretraining else 0.00008, betas=(0.8, 0.95), fused=True)
 params = list(raw_model.transformer.h.parameters())
 matrix_params = [p for p in params if p.ndim == 2]
 scalar_params = [p for p in params if p.ndim < 2] + [raw_model.skip_weights]

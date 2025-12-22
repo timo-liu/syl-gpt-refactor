@@ -64,8 +64,22 @@ for s in splits:
 	with torch.inference_mode():
 		logits = model(tokens_tensor, inference=True)
 		last_token_logits = logits[0, T_unpadded - 1, :]
-		pred = torch.argmax(last_token_logits).item()
 
+		if cli_args.paradigm == "syl":
+			sep_min, sep_max = 258, 285
+		else:
+			sep_min, sep_max = 260, 287
+		vocab_size = last_token_logits.size(0)
+
+		separator_mask = (
+			(torch.arange(vocab_size, device=last_token_logits.device) >= sep_min) &
+			(torch.arange(vocab_size, device=last_token_logits.device) <= sep_max)
+		)
+		masked_logits = last_token_logits.masked_fill(~separator_mask, float('-inf'))
+		pred = torch.argmax(masked_logits).item()
+	print(f"target {target}")
+	print(f"pred {pred}")
+	print("=============")
 	if pred == target:
 		hits += 1
 

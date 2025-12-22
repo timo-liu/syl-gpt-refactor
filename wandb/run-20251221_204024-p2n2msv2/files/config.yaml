@@ -1,0 +1,63 @@
+_wandb:
+    value:
+        cli_version: 0.23.1
+        e:
+            ywvssx67v5bbn8otdqw3umvl1air51cy:
+                args:
+                    - /mnt/data/syl-gpt-refactor/Configs/trained_eng_syl_config.json
+                    - /mnt/data/syl-gpt-refactor/Data/english_data/bins
+                    - /mnt/data/weights/finetuned
+                    - --weights_path
+                    - /mnt/data/weights/old_goods/eng_syl_good.pth
+                    - --task
+                    - syllables
+                    - --cross_val_counter
+                    - "4"
+                cpu_count: 48
+                cpu_count_logical: 48
+                cudaVersion: "12.2"
+                disk:
+                    /:
+                        total: "155897610240"
+                        used: "93109440512"
+                email: tiyliu@ucdavis.edu
+                executable: /mnt/data/syl-gpt-refactor/Training/.venv/bin/python3
+                git:
+                    commit: 069a7801ef2b373404a0035fc181579cd15c6aeb
+                    remote: https://github.com/timo-liu/syl-gpt-refactor.git
+                gpu: NVIDIA A100 80GB PCIe
+                gpu_count: 2
+                gpu_nvidia:
+                    - architecture: Ampere
+                      cudaCores: 6912
+                      memoryTotal: "85899345920"
+                      name: NVIDIA A100 80GB PCIe
+                      uuid: GPU-8d1d55c3-6681-d203-9d4d-2005ee0b81ee
+                    - architecture: Ampere
+                      cudaCores: 6912
+                      memoryTotal: "85899345920"
+                      name: NVIDIA A100 80GB PCIe
+                      uuid: GPU-dd814ee3-acef-7c48-8d3d-0207c82e4466
+                host: A100
+                memory:
+                    total: "464879484928"
+                os: Linux-6.8.0-1044-azure-x86_64-with-glibc2.35
+                program: -m Training.train
+                python: CPython 3.10.11
+                root: /mnt/data/syl-gpt-refactor
+                startedAt: "2025-12-21T20:40:24.750892Z"
+                writerId: ywvssx67v5bbn8otdqw3umvl1air51cy
+        m: []
+        python_version: 3.10.11
+        t:
+            "1":
+                - 1
+            "2":
+                - 1
+            "3":
+                - 13
+                - 61
+            "4": 3.10.11
+            "5": 0.23.1
+            "12": 0.23.1
+            "13": linux-x86_64

@@ -1,6 +1,7 @@
 *.model
 *.tar
 *.vocab
+Data/test_bins/*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

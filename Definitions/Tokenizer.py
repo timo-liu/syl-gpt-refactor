@@ -120,7 +120,15 @@ class TokenizerConfig:
             # If the string is purely hex (no whitespace), accept it as hex bytes
             if isinstance(k, str):
                 compact = ''.join(ch for ch in k if not ch.isspace())
-                if bool(compact) and len(compact) % 2 == 0 and all(c in hexdigits for c in compact):
+
+                # NEVER hex-decode short alphabetic tokens
+                if len(compact) < 4:
+                    return k
+
+                if (
+                        len(compact) % 2 == 0
+                        and all(c in hexdigits for c in compact)
+                ):
                     return bytes.fromhex(compact)
 
             # Default: return as-is (likely a normal string key)
@@ -134,6 +142,7 @@ class TokenizerConfig:
         if "vocab" in cfg and cfg["vocab"] is not None:
             print("loading dict")
             cfg["vocab"] = canon_dict(cfg["vocab"])
+
         if "vocab_size" in cfg:
             cfg["vocab_size"] = int(cfg["vocab_size"])
         if "merge_to" in cfg:
@@ -178,6 +187,8 @@ class Tokenizer():
                 self.vocab = config.vocab
                 self.vocab_size = len(self.vocab)
                 self.vocab_size = config.vocab_size
+                print(self.vocab["de"])
+                self.i2c = {i:c for c,i in self.vocab.items()}
             else:
                 # this buffoon needs to be trained
                 # not actually going to set vocab to intial vocab. Just going to set a final merge to
@@ -187,7 +198,6 @@ class Tokenizer():
         self.initial_vocab = config.initial_vocab
         self.paradigm = config.paradigm
         self.language = config.language
-        self.i2c = {i : c for c,i in self.vocab.items()}
 
         # splitting into section that require some backbone
         if self.paradigm == "syl":
@@ -211,7 +221,18 @@ class Tokenizer():
             if os.path.exists(f'{self.language}_{self.paradigm}.model'):
                 self.sp = spm.SentencePieceProcessor(model_file=f'{self.language}_{self.paradigm}.model')
 
+    def decode(self, coded : List[int]) -> str:
+        parts = []
 
+        for i in coded:
+            tok = self.i2c[i]
+
+            if isinstance(tok, bytes):
+                parts.append(tok.decode("utf-8", errors="ignore"))
+            else:
+                parts.append(str(tok))
+
+        return "".join(parts)
 
     def train(self,
               text_corpus_path : str,

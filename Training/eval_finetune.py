@@ -42,18 +42,27 @@ out_file = os.path.join(
 	f"{cli_args.task}_{cli_args.language}_{cli_args.paradigm}_{cli_args.cvc}.txt"
 )
 
+meta_file = os.path.join(
+	out_dir,
+	f"{cli_args.task}_{cli_args.language}_{cli_args.paradigm}_{cli_args.cvc}_meta.txt"
+)
+
 hits = 0
 tot = 0
 
 pad_to_multiple = 16
 
+meta = open(meta_file, "w")
+
 for s in splits:
 	if len(s) <= 3:
 		continue
-
-	inp = s[:-1]
+	meta_json = {}
+	inp = s[1:-1]
 	target = int(s[-1])
-
+	meta_json["input"] = inp
+	meta_json["token_count"] = len(input)
+	meta_json["target"] = target
 	T_unpadded = len(inp)
 	pad_to = ((T_unpadded + pad_to_multiple - 1) // pad_to_multiple) * pad_to_multiple
 	pad_needed = pad_to - T_unpadded
@@ -77,14 +86,14 @@ for s in splits:
 		)
 		masked_logits = last_token_logits.masked_fill(~separator_mask, float('-inf'))
 		pred = torch.argmax(masked_logits).item()
-	print(f"target {target}")
-	print(f"pred {pred}")
-	print("=============")
+		meta_json["prediction"] = pred
 	if pred == target:
 		hits += 1
 
 	tot += 1
+	meta.write(json.dumps(meta_json) + "\n")
 
+meta.close()
 acc = hits / tot if tot > 0 else 0.0
 line = f"{cli_args.task},{cli_args.language},{cli_args.paradigm},{cli_args.cvc},{acc:.6f},{hits},{tot}\n"
 

@@ -40,7 +40,8 @@ def unpack_and_syllabize(stored_path : str, bin_path : str, tokenizer, cross_val
                 else:
                     out.extend(t)
             return bytes(out)
-        print(join_tokens([i2c[c] for c in x]))
+        if tokenizer.sp:
+            print(tokenizer.sp.decode(x))
     with_syllables = with_syllables[:COMPLETE_SET_SIZE]
     for i in range(cross_val_counter):
         test_slice = with_syllables[i*holdout_set_size:(i+1)*holdout_set_size]
@@ -67,6 +68,7 @@ def unpack_and_wordize(stored_path : str, bin_path : str, tokenizer, cross_val_c
         if wc <= 30 and wc > 1:
             ids.insert(-1, tokenizer.vocab.get(f"<1>"))
             ids.insert(-1, tokenizer.vocab.get(f"<{wc}>"))
+            print(ids)
             with_words.append(ids)
     with_words = with_words[:COMPLETE_SET_SIZE]
     for i in range(cross_val_counter):

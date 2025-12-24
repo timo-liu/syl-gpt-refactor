@@ -1,1 +1,1 @@
-word,span,syl,5,0.058140,5,86
+word,span,syl,5,0.034884,3,86

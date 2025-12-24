@@ -1,1 +1,1 @@
-syllables,span,uni,1,0.030928,3,97
+syllables,span,uni,1,0.020619,2,97

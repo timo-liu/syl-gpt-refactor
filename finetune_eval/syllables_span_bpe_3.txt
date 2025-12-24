@@ -1,1 +1,1 @@
-syllables,span,bpe,3,0.042105,4,95
+syllables,span,bpe,3,0.052632,5,95

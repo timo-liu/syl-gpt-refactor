@@ -1,1 +1,1 @@
-syllables,span,syl,7,0.100000,10,100
+syllables,span,syl,7,0.090000,9,100

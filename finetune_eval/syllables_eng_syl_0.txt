@@ -1,1 +1,1 @@
-syllables,eng,syl,0,0.040000,4,100
+syllables,eng,syl,0,0.100000,10,100

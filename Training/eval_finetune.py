@@ -60,8 +60,8 @@ for s in splits:
 	meta_json = {}
 	inp = s[1:-1]
 	target = int(s[-1])
-	meta_json["input"] = inp
-	meta_json["token_count"] = len(input)
+	meta_json["input"] = inp.tolist()
+	meta_json["token_count"] = len(inp)
 	meta_json["target"] = target
 	T_unpadded = len(inp)
 	pad_to = ((T_unpadded + pad_to_multiple - 1) // pad_to_multiple) * pad_to_multiple

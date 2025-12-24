@@ -1,0 +1,1 @@
+syllables,span,syl,4,0.105263,10,95

@@ -1,1 +1,1 @@
-word,span,bpe,1,0.101124,9,89
+word,span,bpe,1,0.089888,8,89

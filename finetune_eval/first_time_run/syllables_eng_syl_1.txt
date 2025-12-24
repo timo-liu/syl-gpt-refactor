@@ -1,0 +1,1 @@
+syllables,eng,syl,1,0.080000,8,100

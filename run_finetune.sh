@@ -17,6 +17,7 @@ CV_COUNTERS=({0..9})
 TASKS=(
 	"syllables"
 	"word"
+	"g2p"
 )
 
 TASK_PREFIXES=(

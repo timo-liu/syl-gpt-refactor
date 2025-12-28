@@ -5,7 +5,7 @@ import re
 import ast
 import math
 from dataclasses import dataclass, field, MISSING
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union, Tuple
 from string import hexdigits
 import numpy as np
 from tqdm import tqdm
@@ -187,7 +187,6 @@ class Tokenizer():
                 self.vocab = config.vocab
                 self.vocab_size = len(self.vocab)
                 self.vocab_size = config.vocab_size
-                print(self.vocab["de"])
                 self.i2c = {i:c for c,i in self.vocab.items()}
             else:
                 # this buffoon needs to be trained
@@ -221,7 +220,7 @@ class Tokenizer():
             if os.path.exists(f'{self.language}_{self.paradigm}.model'):
                 self.sp = spm.SentencePieceProcessor(model_file=f'{self.language}_{self.paradigm}.model')
 
-    def decode(self, coded : List[int]) -> str:
+    def decode(self, coded : List[int], debug=False):
         parts = []
 
         for i in coded:
@@ -231,8 +230,10 @@ class Tokenizer():
                 parts.append(tok.decode("utf-8", errors="ignore"))
             else:
                 parts.append(str(tok))
-
-        return "".join(parts)
+        if not debug:
+            return "".join(parts)
+        else:
+            return parts
 
     def train(self,
               text_corpus_path : str,
@@ -385,22 +386,40 @@ class Tokenizer():
             }
             json.dump(info, f, indent=4)
 
-    def tokenize(self, text):
+    def tokenize(self, text, debug : bool = False):
         assert not self.trainable, "This needs to be trained, or load a tokenizer with a vocab"
         if self.paradigm == "syl" and self.language == "eng":
             text = re.findall(r'\s*\S+', re.sub(r'[\r\n\t]+', ' ', text).strip())
             segmented = self.syllabifier.machine_syllabify(text, return_list=True)
-            return [x for w in segmented for s in w for x in self.encode(s)]
+            if not debug:
+                return [y for w in segmented for s in w for x in self.encode(s) for y in x]
+            else:
+                return [
+                    self.encode(s, debug=debug)
+                    for w in segmented
+                    for s in w
+                    ]
         if self.paradigm == "syl" and self.language == "span":
             text = re.findall(r'\s*\S+', re.sub(r'[\r\n\t]+', ' ', text).strip())
             segmented = [x for w in text for x in syllabize(w)[0]]
-            return [x for w in segmented for s in w for x in self.encode(s)]
+            if not debug:
+                return [
+                    y
+                    for w in segmented
+                    for y in
+                    self.encode(w, debug=debug)
+                ]
+            else:
+                return [
+                    self.encode(w, debug=debug)
+                    for w in segmented
+                ]
         if self.paradigm in ["uni", "bpe"]:
             return self.sp.encode(text, out_type=int)
         if self.paradigm == "morf":
             return self.encode(text)
 
-    def encode(self, token: str) -> List[int]:
+    def encode(self, token: str, debug: bool = False):
         """
         Encode a token to ids. If a unit isn't in vocab, fall back to UTF-8 bytes
         (each byte mapped to its id). Never drop information.
@@ -410,9 +429,15 @@ class Tokenizer():
         if self.paradigm == "syl":
             # Expect syllables as strings in vocab; otherwise byte-fallback
             if token in self.vocab:
-                return [self.vocab[token]]
+                if not debug:
+                    return [self.vocab[token]]
+                else:
+                    return [self.vocab[token]], False
             else:
-                return utf8_bytes_ids(self, token)
+                if not debug:
+                    return utf8_bytes_ids(self, token)
+                else:
+                    return utf8_bytes_ids(self, token), True
         elif self.paradigm == "morf":
             morphs = self.morf_model.viterbi_segment(token)[0]
             out: List[int] = []

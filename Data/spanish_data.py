@@ -1,21 +1,33 @@
+"""
+python spanish_data.py \
+    "C:/path/to/tokenizer" \
+    "C:/path/to/configs/trained_span_bpe_config.json" \
+    --tasks syllables words g2p
+"""
+
 import requests
-from bs4 import BeautifulSoup
-import re
-import time
 import json
 import os
-from urllib.parse import urljoin
-from syltippy import syllabize
 import sys
 import argparse
 import numpy as np
 from tqdm import tqdm
+import random
+import time
+import re
+from urllib.parse import urljoin
+from bs4 import BeautifulSoup
+from syltippy import syllabize
+
+# =========================
+# STORY SCRAPING (SPANISH)
+# =========================
 
 BASE_URL = "https://www.fluentwithstories.com"
 START_URL = f"{BASE_URL}/stories/es"
 
+
 def extract_story_links(start_url=START_URL):
-    """Crawl through all paginated /stories/es pages and return story URLs."""
     all_links = []
     next_url = start_url
     seen_pages = set()
@@ -28,13 +40,11 @@ def extract_story_links(start_url=START_URL):
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, "html.parser")
 
-        # collect story links
         for a in soup.select("div.w-dyn-item a.story_card_component.w-inline-block"):
             href = a.get("href")
             if href and href.startswith("/stories/es/"):
                 all_links.append(urljoin(BASE_URL, href))
 
-        # detect pagination
         next_link = soup.select_one("a.w-pagination-next")
         if next_link and next_link.get("href"):
             next_url = urljoin(start_url, next_link["href"])
@@ -43,13 +53,12 @@ def extract_story_links(start_url=START_URL):
 
     return sorted(set(all_links))
 
+
 def parse_story(url):
-    """Extracts sentences and level from one story page."""
     resp = requests.get(url)
     resp.raise_for_status()
     soup = BeautifulSoup(resp.text, "html.parser")
 
-    # Extract CEFR level from the URL
     m = re.search(r"/stories/es/([ab]\d)-", url)
     level = m.group(1).upper() if m else "UNKNOWN"
 
@@ -57,19 +66,24 @@ def parse_story(url):
 
     sentences = []
     if content_div:
-        # get text from <p> tags specifically (avoids extra whitespace)
         paragraphs = [p.get_text(" ", strip=True) for p in content_div.find_all("p")]
         text = " ".join(paragraphs)
-        # split into sentences
-        for sent in re.split(r'(?<=[\.\?!¡!¿])\s+', text):
+        for sent in re.split(r'(?<=[\.\?!¡¿])\s+', text):
             sent = sent.strip()
             if sent:
                 sentences.append(sent)
+
     return level, sentences
 
-def main(DATA_PATH : str):
-    all_sentences = []
 
+def scrape_and_store_spanish(DATA_PATH):
+    out_path = os.path.join(DATA_PATH, "fluentwithstories_spanish.json")
+
+    if os.path.exists(out_path):
+        print(f"Using cached Spanish stories: {out_path}")
+        return out_path
+
+    all_sentences = []
     links = extract_story_links()
     print(f"Found {len(links)} total stories.")
 
@@ -80,178 +94,184 @@ def main(DATA_PATH : str):
             all_sentences.append({"level": level, "sentence": s})
         time.sleep(0.5)
 
-    out_path = f"{DATA_PATH}/fluentwithstories_spanish.json"
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(all_sentences, f, ensure_ascii=False, indent=2)
-    print(f"✅ Saved {len(all_sentences)} sentences to {out_path}")
+
+    print(f"Saved {len(all_sentences)} sentences to {out_path}")
     return out_path
 
-def unpack_and_syllabize(stored_path : str, bin_path : str, tokenizer, cross_val_counter : str):
+
+# =========================
+# DATA UNPACKING
+# =========================
+
+def unpack_and_syllabize(stored_path, bin_path, tokenizer, cross_val_counter):
     COMPLETE_SET_SIZE = 1000
-    holdout_set_size = COMPLETE_SET_SIZE//cross_val_counter
+    holdout = COMPLETE_SET_SIZE // cross_val_counter
+
     with open(stored_path, "r", encoding="utf-8") as f:
         data = json.load(f)
-    with_syllables = []
+
+    out = []
     for s in data:
-        sentence = s["sentence"]
-        ids = tokenizer.tokenize_with_eos(sentence)
-        syllables = len(syllabize(sentence)[0])
-        if syllables <= 30 and syllables > 1:
-            ids.insert(-1, tokenizer.vocab.get(f"<1>"))
-            ids.insert(-1, tokenizer.vocab.get(f"<{syllables}>"))
-            with_syllables.append(ids)
-    with_syllables = with_syllables[:COMPLETE_SET_SIZE]
+        sent = s["sentence"]
+        ids = tokenizer.tokenize_with_eos(sent)
+        syls = len(syllabize(sent)[0])
+
+        if 1 < syls <= 30:
+            ids.insert(-1, tokenizer.vocab.get("<1>"))
+            ids.insert(-1, tokenizer.vocab.get(f"<{syls}>"))
+            out.append(ids)
+
+    out = out[:COMPLETE_SET_SIZE]
+
     for i in range(cross_val_counter):
-        test_slice = with_syllables[i*holdout_set_size:(i+1)*holdout_set_size]
-        train_slice = with_syllables[:i * holdout_set_size] + with_syllables[(i + 1) * holdout_set_size:]
-        val_ratio = 0.1
-        split_idx = int(len(train_slice) * (1 - val_ratio))
-        train_set = train_slice[:split_idx]
-        val_set = train_slice[split_idx:]
-        put_into_file(test_slice, bin_path, tokenizer.language, tokenizer.paradigm, "syllables", "test", i)
-        put_into_file(train_set, bin_path, tokenizer.language, tokenizer.paradigm, "syllables", "train", i)
-        put_into_file(val_set, bin_path, tokenizer.language, tokenizer.paradigm, "syllables", "val", i)
+        test = out[i * holdout:(i + 1) * holdout]
+        train = out[:i * holdout] + out[(i + 1) * holdout:]
+
+        split = int(len(train) * 0.9)
+        put_into_file(test, bin_path, tokenizer.language, tokenizer.paradigm, "syllables", "test", i)
+        put_into_file(train[:split], bin_path, tokenizer.language, tokenizer.paradigm, "syllables", "train", i)
+        put_into_file(train[split:], bin_path, tokenizer.language, tokenizer.paradigm, "syllables", "val", i)
 
 
-def unpack_and_wordize(stored_path : str, bin_path : str, tokenizer, cross_val_counter : str):
+def unpack_and_wordize(stored_path, bin_path, tokenizer, cross_val_counter):
     COMPLETE_SET_SIZE = 1000
-    holdout_set_size = COMPLETE_SET_SIZE//cross_val_counter
+    holdout = COMPLETE_SET_SIZE // cross_val_counter
+
     with open(stored_path, "r", encoding="utf-8") as f:
         data = json.load(f)
-    with_words = []
+
+    out = []
     for s in data:
-        sentence = s["sentence"]
-        ids = tokenizer.tokenize_with_eos(sentence)
-        wc = len(sentence.split())
-        if wc <= 30 and wc > 1:
-            ids.insert(-1, tokenizer.vocab.get(f"<1>"))
+        sent = s["sentence"]
+        wc = len(sent.split())
+        ids = tokenizer.tokenize_with_eos(sent)
+
+        if 1 < wc <= 30:
+            ids.insert(-1, tokenizer.vocab.get("<1>"))
             ids.insert(-1, tokenizer.vocab.get(f"<{wc}>"))
-            with_words.append(ids)
-    with_words = with_words[:COMPLETE_SET_SIZE]
+            out.append(ids)
+
+    out = out[:COMPLETE_SET_SIZE]
+
     for i in range(cross_val_counter):
-        test_slice = with_words[i*holdout_set_size:(i+1)*holdout_set_size]
-        train_slice = with_words[:i * holdout_set_size] + with_words[(i + 1) * holdout_set_size:]
-        val_ratio = 0.1
-        split_idx = int(len(train_slice) * (1 - val_ratio))
-        train_set = train_slice[:split_idx]
-        val_set = train_slice[split_idx:]
-        put_into_file(test_slice, bin_path, tokenizer.language, tokenizer.paradigm, "word", "test", i)
-        put_into_file(train_set, bin_path, tokenizer.language, tokenizer.paradigm, "word", "train", i)
-        put_into_file(val_set, bin_path, tokenizer.language, tokenizer.paradigm, "word", "val", i)
+        test = out[i * holdout:(i + 1) * holdout]
+        train = out[:i * holdout] + out[(i + 1) * holdout:]
+
+        split = int(len(train) * 0.9)
+        put_into_file(test, bin_path, tokenizer.language, tokenizer.paradigm, "word", "test", i)
+        put_into_file(train[:split], bin_path, tokenizer.language, tokenizer.paradigm, "word", "train", i)
+        put_into_file(train[split:], bin_path, tokenizer.language, tokenizer.paradigm, "word", "val", i)
+
+
+def unpack_and_g2p(stored_path, bin_path, tokenizer, cross_val_counter):
+    COMPLETE_SET_SIZE = 2000
+    holdout = COMPLETE_SET_SIZE // cross_val_counter
+
+    with open(stored_path, "r", encoding="utf-8") as f:
+        data = [{"word": x, "ipa": y} for line in f for x, y in [line.strip().split("\t")]]
+
+    random.seed(0)
+    random.shuffle(data)
+
+    g2p = []
+    for d in data[:COMPLETE_SET_SIZE]:
+        ids = []
+        ids.extend(tokenizer.tokenize(d["word"]))
+        ids.append(tokenizer.vocab.get("<1>"))
+        ids.extend(tokenizer.tokenize(d["ipa"]))
+        ids.append(tokenizer.vocab.get("<EOS>"))
+        g2p.append(ids)
+
+    for i in range(cross_val_counter):
+        test = g2p[i * holdout:(i + 1) * holdout]
+        train = g2p[:i * holdout] + g2p[(i + 1) * holdout:]
+
+        split = int(len(train) * 0.9)
+        put_into_file(test, bin_path, tokenizer.language, tokenizer.paradigm, "g2p", "test", i)
+        put_into_file(train[:split], bin_path, tokenizer.language, tokenizer.paradigm, "g2p", "train", i)
+        put_into_file(train[split:], bin_path, tokenizer.language, tokenizer.paradigm, "g2p", "val", i)
+
+
+# =========================
+# BIN WRITING
+# =========================
 
 def write_datafile(filename, toks):
-    """
-    Saves token data as a .bin file, for reading in C.
-    - First comes a header with 256 int32s
-    - The tokens follow, each as a uint16
-    """
-    assert len(toks) < 2 ** 31, "token count too large"  # ~2.1B tokens
-    # construct the header
     header = np.zeros(256, dtype=np.int32)
-    header[0] = 20240520  # magic
-    header[1] = 1  # version
-    header[2] = len(toks)  # number of tokens after the 256*4 bytes of header (each 2 bytes as uint16)
-    # construct the tokens numpy array, if not already
-    if not isinstance(toks, np.ndarray) or not toks.dtype == np.uint16:
-        # validate that no token exceeds a uint16
-        maxtok = 2 ** 16
-        assert all(0 <= t < maxtok for t in toks), "token dictionary too large for uint16"
-        toks_np = np.array(toks, dtype=np.uint16)
-    else:
-        toks_np = toks
-    # write to file
+    header[0] = 20240520
+    header[1] = 1
+    header[2] = len(toks)
+
+    toks = np.array(toks, dtype=np.uint16)
     print(f"writing {len(toks):,} tokens to {filename}")
+
     with open(filename, "wb") as f:
         f.write(header.tobytes())
-        f.write(toks_np.tobytes())
+        f.write(toks.tobytes())
 
-def put_into_file(ids, path : str, language : str, paradigm : str, task : str, split : str, cvc : int):
-    """
-    Adapted from the NanoGPT Speedrun code
-    Script kiddie, GO!
-    """
+
+def put_into_file(ids, path, language, paradigm, task, split, cvc):
     shard_size = 10 ** 8
-    shard_index = 0 # realistically, it will only be zero
-    all_tokens_np = np.empty((shard_size,), dtype=np.uint16)
-    token_count = 0
+    all_tokens = []
+    for x in ids:
+        if isinstance(x, (list, tuple, np.ndarray)):
+            all_tokens.extend(int(t) for t in x)
+        else:
+            all_tokens.append(int(x))
 
-    def _flatten_to_ints(tokens):
-        if tokens and isinstance(tokens[0], (list, tuple, np.ndarray)):
-            flat = []
-            for t in tokens:
-                if isinstance(t, (list, tuple, np.ndarray)):
-                    flat.extend(int(x) for x in t)
-                else:
-                    flat.append(int(t))
-            return flat
-        return [int(x) for x in tokens]
-
-    ids = _flatten_to_ints(ids)
-    idx = 0
-    remaining = len(ids)
-
-    def _new_progress(shard_idx):
-        return tqdm(total=shard_size, unit="tokens", desc=f"Shard {shard_idx}")
-
-    progress_bar = _new_progress(shard_index)
-
-    while remaining > 0:
-        space = shard_size - token_count
-        if space == 0:
-            # shard full: write and open new one
-            outname = os.path.join(
-                path,
-                f"{task}_{language}_{paradigm}_{split}_{cvc}_{shard_index:06d}.bin"
-            )
-            write_datafile(outname, all_tokens_np)
-            shard_index += 1
-            progress_bar.close()
-            progress_bar = _new_progress(shard_index)
-            token_count = 0
-            space = shard_size
-        take = min(space, remaining)
-        all_tokens_np[token_count:token_count + take] = ids[idx: idx + take]
-        token_count += take
-        idx += take
-        remaining -= take
-        progress_bar.update(take)
-
-    if token_count != 0:
-        outname = os.path.join(
-            path,
-            f"{task}_{language}_{paradigm}_{split}_{cvc}_{shard_index:06d}.bin"
-        )
-        # write only the portion filled
-        write_datafile(outname, all_tokens_np[:token_count])
+    outname = os.path.join(
+        path, f"{task}_{language}_{paradigm}_{split}_{cvc}_000000.bin"
+    )
+    write_datafile(outname, all_tokens)
 
 
+# =========================
+# MAIN
+# =========================
 
 if __name__ == "__main__":
-    arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument("tokenizers_folder", type=str, help="Absolute Path to tokenizer folder")
-    arg_parser.add_argument("tokenizer_config", type=str, help="trained config path")
-    arg_parser.add_argument("--cross_val_sets", type=int, default=10)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("tokenizer_config", type=str)
+    parser.add_argument("--cross_val_sets", type=int, default=10)
+    parser.add_argument(
+        "--tasks",
+        nargs="+",
+        default=["syllables", "words"],
+        choices=["syllables", "words", "g2p"]
+    )
+    args = parser.parse_args()
 
-    args = arg_parser.parse_args()
+    assert "span" in args.tokenizer_config
 
-    assert "span" in args.tokenizer_config, "SPANISH CONFIG PLS"
+    from Definitions.Tokenizer import TokenizerConfig, Tokenizer
 
-    tokenizer_directory = os.path.abspath(args.tokenizers_folder)
-    sys.path.insert(0, tokenizer_directory)
-    from Tokenizer import TokenizerConfig, Tokenizer
-    TOKENIZER_CONFIG = TokenizerConfig.load(args.tokenizer_config)
-    tokenizer = Tokenizer(TOKENIZER_CONFIG)
+    tokenizer = Tokenizer(TokenizerConfig.load(args.tokenizer_config))
 
-    DATA_PATH = "spanish_data"
-    if not os.path.exists(DATA_PATH):
-        os.makedirs(DATA_PATH, exist_ok=True)
-        BIN_PATH = os.path.join(DATA_PATH, "bins")
-        if not os.path.exists(BIN_PATH):
-            os.makedirs(BIN_PATH)
-
-    #main(DATA_PATH)
-
-    stored_path = f"{DATA_PATH}/fluentwithstories_spanish.json"
+    DATA_PATH = "Data/spanish_data"
     BIN_PATH = os.path.join(DATA_PATH, "bins")
-    unpack_and_syllabize(stored_path, BIN_PATH, tokenizer, args.cross_val_sets)
-    unpack_and_wordize(stored_path, BIN_PATH, tokenizer, args.cross_val_sets)
+    os.makedirs(BIN_PATH, exist_ok=True)
+
+    G2P_URL = "https://raw.githubusercontent.com/lingjzhu/CharsiuG2P/main/dicts/spa.tsv"
+    g2p_path = os.path.join(DATA_PATH, "spa_g2p.tsv")
+
+    story_path = scrape_and_store_spanish(DATA_PATH)
+
+    if "g2p" in args.tasks:
+        if not os.path.exists(g2p_path):
+            r = requests.get(G2P_URL)
+            r.raise_for_status()
+            with open(g2p_path, "w", encoding="utf-8") as f:
+                f.write(r.text)
+        else:
+            print(f"Using cached G2P data: {g2p_path}")
+
+    if "syllables" in args.tasks:
+        unpack_and_syllabize(story_path, BIN_PATH, tokenizer, args.cross_val_sets)
+
+    if "words" in args.tasks:
+        unpack_and_wordize(story_path, BIN_PATH, tokenizer, args.cross_val_sets)
+
+    if "g2p" in args.tasks:
+        unpack_and_g2p(g2p_path, BIN_PATH, tokenizer, args.cross_val_sets)

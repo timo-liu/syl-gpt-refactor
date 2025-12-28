@@ -15,8 +15,8 @@ PARADIGMS=("syl" "uni" "bpe")
 CV_COUNTERS=({0..9})
 
 TASKS=(
-	"syllables"
-	"word"
+	# "syllables"
+	# "word"
 	"g2p"
 )
 

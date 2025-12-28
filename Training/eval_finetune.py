@@ -6,6 +6,7 @@ import torch.nn.functional as F
 import os
 import numpy as np
 import json
+import math
 
 parser = argparse.ArgumentParser()
 parser.add_argument("finetuned_weight", type=str, help="Path to the weight that needs to be evaluated")
@@ -124,30 +125,53 @@ else:  # G2P task
             inp = s[:split_idx]
             actual = s[split_idx + 1:]
 
-            # Pad input
-            T_unpadded = len(inp)
-            pad_to = ((T_unpadded + pad_to_multiple - 1) // pad_to_multiple) * pad_to_multiple
-            pad_needed = pad_to - T_unpadded
-            tokens_tensor = torch.tensor(inp, dtype=torch.long, device=device)
-            tokens_tensor = F.pad(tokens_tensor, (0, pad_needed), value=0)
-
-            # Generate
+            # --- Generation ---
             generated = []
-            input_so_far = tokens_tensor[:T_unpadded].unsqueeze(0)
-            with torch.inference_mode():
-                for _ in range(15):
-                    logits = model(input_so_far, inference=True)
-                    last_logits = logits[0, -1, :]
-                    pred = torch.argmax(last_logits).item()
-                    generated.append(pred)
-                    if pred == eos_id:
-                        break
-                    input_so_far = torch.cat([input_so_far, torch.tensor([[pred]], device=device)], dim=1)
+            prompt_tokens = inp.tolist()
 
-            # Evaluate
+            with torch.inference_mode():
+                for _ in range(25):
+
+                    # --- 2. Prepare Inputs (The "Hard Way") ---
+
+                    # Current unpadded length
+                    T_unpadded = len(prompt_tokens)
+
+                    # Pad to next multiple
+                    pad_to = math.ceil(T_unpadded / pad_to_multiple) * pad_to_multiple
+                    assert pad_to % pad_to_multiple == 0
+
+                    pad_needed = pad_to - T_unpadded
+
+                    # Create padded token tensor (no carry-over)
+                    tokens_tensor = torch.tensor(
+                        prompt_tokens, dtype=torch.long, device=device
+                    )
+                    tokens_tensor = F.pad(tokens_tensor, (0, pad_needed), value=0)
+
+                    T_padded = len(tokens_tensor)
+
+                    logits = model(tokens_tensor, inference=True)
+
+                    # --- 4. Get the Next Token ---
+                    last_token_logits = logits[0, T_unpadded - 1, :]
+
+                    # --- 5. Argmax (greedy) ---
+                    next_token_id = torch.argmax(last_token_logits).item()
+
+                    generated.append(next_token_id)
+
+                    # --- 6. Append and Loop ---
+                    if next_token_id == eos_id:
+                        break
+
+                    prompt_tokens.append(next_token_id)
+                
+            # --- Evaluation ---
             actual_trimmed = [int(x) for x in actual if x != eos_id]
             gen_trimmed = [int(x) for x in generated if x != eos_id]
             correct = gen_trimmed == actual_trimmed
+
             if correct:
                 hits += 1
             tot += 1

@@ -220,20 +220,33 @@ class Tokenizer():
             if os.path.exists(f'{self.language}_{self.paradigm}.model'):
                 self.sp = spm.SentencePieceProcessor(model_file=f'{self.language}_{self.paradigm}.model')
 
-    def decode(self, coded : List[int], debug=False):
-        parts = []
+    def decode(self, coded: List[int], debug=False):
+        if self.paradigm == "syl":
+            parts = []
+            byte_buffer = bytearray()
 
-        for i in coded:
-            tok = self.i2c[i]
+            for i in coded:
+                tok = self.i2c[i]
 
-            if isinstance(tok, bytes):
-                parts.append(tok.decode("utf-8", errors="ignore"))
+                if isinstance(tok, bytes):
+                    byte_buffer.extend(tok)
+                else:
+                    if byte_buffer:
+                        parts.append(byte_buffer.decode("utf-8", errors="replace"))
+                        byte_buffer.clear()
+                    parts.append(str(tok))
+
+            if byte_buffer:
+                parts.append(byte_buffer.decode("utf-8", errors="replace"))
+
+            if not debug:
+                return "".join(parts)
             else:
-                parts.append(str(tok))
-        if not debug:
-            return "".join(parts)
+                return parts
         else:
-            return parts
+            if self.sp:
+                return self.sp.decode(coded)
+            assert False, "YOU HAVE NOTHING"
 
     def train(self,
               text_corpus_path : str,
@@ -392,7 +405,7 @@ class Tokenizer():
             text = re.findall(r'\s*\S+', re.sub(r'[\r\n\t]+', ' ', text).strip())
             segmented = self.syllabifier.machine_syllabify(text, return_list=True)
             if not debug:
-                return [y for w in segmented for s in w for x in self.encode(s) for y in x]
+                return [x for w in segmented for s in w for x in self.encode(s)]
             else:
                 return [
                     self.encode(s, debug=debug)

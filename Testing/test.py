@@ -22,11 +22,4 @@ if __name__ == "__main__":
         sep_idx = np.where(separators)[0]
         splits = np.split(tokens, sep_idx + 1)
     for s in splits[:10]:
-        print(len(s)-3)
-        print(" ".join(
-            tokenizer.i2c[x].decode("utf-8", errors="ignore")
-            if isinstance(tokenizer.i2c[x], bytes)
-            else str(tokenizer.i2c[x])
-            for x in s
-        ))
         print(tokenizer.decode(s))

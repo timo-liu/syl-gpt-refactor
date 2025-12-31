@@ -1,1 +1,1 @@
-syllables,eng,uni,9,0.000000,0,93
+syllables,eng,uni,9,0.064516,6,93

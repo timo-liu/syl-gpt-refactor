@@ -10,14 +10,20 @@ CONFIG_BASE="/mnt/data/syl-gpt-refactor/Configs"
 WEIGHTS_BASE="/mnt/data/weights/old_goods"
 FINETUNED_BASE="/mnt/data/weights/finetuned"
 
-LANGS=("eng" "span")
-PARADIGMS=("syl" "uni" "bpe")
+LANGS=(
+  "eng"
+  # "span"
+  )
+PARADIGMS=(
+  # "syl"
+  "uni"
+  "bpe")
 CV_COUNTERS=({0..9})
 
 TASKS=(
-	# "syllables"
-	# "word"
-	"g2p"
+	"syllables"
+	"word"
+	# "g2p"
 )
 
 TASK_PREFIXES=(

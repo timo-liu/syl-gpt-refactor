@@ -69,7 +69,7 @@ else:
     args.input_val_bin = f"{cli_args.task}_{config.language}_{config.paradigm}_val_{cli_args.cross_val_counter}_*.bin"
     args.batch_size = 8
     args.sequence_length = 64
-    args.num_iterations = 256
+    args.num_iterations = 256 if cli_args.task == "syl" else 768
     args.val_loss_every = 2
     args.val_tokens = 1920
 

@@ -1,1 +1,1 @@
-syllables,eng,bpe,2,0.000000,0,100
+syllables,eng,bpe,2,0.060000,6,100

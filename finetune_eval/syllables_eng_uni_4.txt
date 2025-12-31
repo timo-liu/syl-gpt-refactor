@@ -1,1 +1,1 @@
-syllables,eng,uni,4,0.000000,0,100
+syllables,eng,uni,4,0.080000,8,100

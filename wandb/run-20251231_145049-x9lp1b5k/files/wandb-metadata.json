@@ -1,0 +1,56 @@
+{
+  "os":  "Linux-6.8.0-1044-azure-x86_64-with-glibc2.35",
+  "python":  "CPython 3.10.11",
+  "startedAt":  "2025-12-31T14:50:49.371653Z",
+  "args":  [
+    "/mnt/data/syl-gpt-refactor/Configs/trained_eng_bpe_config.json",
+    "/mnt/data/syl-gpt-refactor/Data/english_data/bins",
+    "/mnt/data/weights/finetuned",
+    "--weights_path",
+    "/mnt/data/weights/old_goods/eng_bpe_good.pth",
+    "--task",
+    "word",
+    "--cross_val_counter",
+    "6"
+  ],
+  "program":  "-m Training.train",
+  "git":  {
+    "remote":  "https://github.com/timo-liu/syl-gpt-refactor.git",
+    "commit":  "12d8425b098fe4afe2d9fa1fecdd63a56183fa8d"
+  },
+  "email":  "tiyliu@ucdavis.edu",
+  "root":  "/mnt/data/syl-gpt-refactor",
+  "host":  "A100",
+  "executable":  "/mnt/data/syl-gpt-refactor/Training/.venv/bin/python3",
+  "cpu_count":  48,
+  "cpu_count_logical":  48,
+  "gpu":  "NVIDIA A100 80GB PCIe",
+  "gpu_count":  2,
+  "disk":  {
+    "/":  {
+      "total":  "155897610240",
+      "used":  "95150223360"
+    }
+  },
+  "memory":  {
+    "total":  "464879476736"
+  },
+  "gpu_nvidia":  [
+    {
+      "name":  "NVIDIA A100 80GB PCIe",
+      "memoryTotal":  "85899345920",
+      "cudaCores":  6912,
+      "architecture":  "Ampere",
+      "uuid":  "GPU-be6cc75b-e0d8-1a02-94bc-390ddd945f7d"
+    },
+    {
+      "name":  "NVIDIA A100 80GB PCIe",
+      "memoryTotal":  "85899345920",
+      "cudaCores":  6912,
+      "architecture":  "Ampere",
+      "uuid":  "GPU-6e16cf67-1d39-83d9-ad9d-de4bf2c53568"
+    }
+  ],
+  "cudaVersion":  "12.2",
+  "writerId":  "50mqqi5z3ydc7101apvxebhqr3m1eqme"
+}

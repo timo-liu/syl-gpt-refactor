@@ -1,5 +1,6 @@
 import argparse
 from Definitions.Model import *
+from transformers import AutoModel
 from torch import nn
 import torch
 import torch.nn.functional as F
@@ -19,10 +20,14 @@ parser.add_argument("bins_path", type=str, help="bins/")
 cli_args = parser.parse_args()
 
 device = "cuda"
-config = GPTConfig()
-model = GPT(config)
-state_dict = torch.load(cli_args.finetuned_weight, map_location="cpu")["model"]
-model.load_state_dict({k.replace('_orig_mod.', ''): v for k, v in state_dict.items()})
+if cli_args.paradigm != "gpt2":
+    config = GPTConfig()
+    model = GPT(config)
+    state_dict = torch.load(cli_args.finetuned_weight, map_location="cpu")["model"]
+    model.load_state_dict({k.replace('_orig_mod.', ''): v for k, v in state_dict.items()})
+
+else:
+    model = AutoModel.from_pretrained("gpt-2")
 
 for m in model.modules():
     if isinstance(m, (nn.Embedding, nn.Linear)):

@@ -15,22 +15,6 @@ from dotenv import load_dotenv
 from dataclasses import dataclass
 # endregion imports
 
-# region email
-def send_email_gmail(sender: str, recipient: str, subject: str, body: str, app_password: str):
-    msg = EmailMessage()
-    msg["From"] = sender
-    msg["To"] = recipient
-    msg["Subject"] = subject
-    msg.set_content(body)
-
-    with smtplib.SMTP("smtp.gmail.com", 587) as smtp:
-        smtp.ehlo()
-        smtp.starttls()
-        smtp.ehlo()
-        smtp.login(sender, app_password)      # use App Password here
-        smtp.send_message(msg)
-# endregion email
-
 # region dotenv
 load_dotenv()
 email_password = os.getenv("EMAIL_PASSWORD")
@@ -46,6 +30,7 @@ argparser.add_argument('--weights_path', type=str)
 argparser.add_argument('--pretraining', type=bool, default=False)
 argparser.add_argument('--task', type=str)
 argparser.add_argument('--cross_val_counter', type=int)
+
 cli_args = argparser.parse_args()
 # endregion argparse
 
@@ -64,6 +49,7 @@ if cli_args.pretraining:
     print("Pretraining")
     args.input_bin = f"{config.language}_{config.paradigm}_CORPUS/{config.language}_{config.paradigm}_train_*.bin"
     args.input_val_bin = f"{config.language}_{config.paradigm}_CORPUS/{config.language}_{config.paradigm}_val_*.bin"
+    args.save_every = 128
 else:
     args.input_bin = f"{cli_args.task}_{config.language}_{config.paradigm}_train_{cli_args.cross_val_counter}_*.bin"
     args.input_val_bin = f"{cli_args.task}_{config.language}_{config.paradigm}_val_{cli_args.cross_val_counter}_*.bin"
@@ -71,6 +57,7 @@ else:
     args.sequence_length = 64
     args.num_iterations = 256 if cli_args.task == "syl" else 768
     args.val_loss_every = 2
+    args.save_every = 32
     args.val_tokens = 1920
 
 args.input_bin = os.path.join(cli_args.data_path, args.input_bin)
@@ -231,6 +218,14 @@ for step in range(args.num_iterations + 1):
         #     torch.save(log, os.path.join(cli_args.out_path, f"{config.language}_{config.paradigm}_{step}.pth"))
         # else:
         #     torch.save(log, os.path.join(cli_args.out_path, f"{config.language}_{config.paradigm}_{step}_finetuned.pth"))
+        if master_process:
+            if cli_args.pretraining:
+                log = dict(model=raw_model.state_dict(), optimizers=[opt.state_dict() for opt in optimizers])
+                torch.save(log, os.path.join(cli_args.out_path, f"{config.language}_{config.paradigm}_{step}_good.pth"))
+            else:
+                log = dict(model=raw_model.state_dict(), optimizers=[opt.state_dict() for opt in optimizers])
+                torch.save(log, os.path.join(cli_args.out_path,
+                                             f"{cli_args.task}_{config.language}_{config.paradigm}_{cli_args.cross_val_counter}_{step}_finetuned.pth"))
         # start the clock again
         torch.cuda.synchronize()
         t0 = time.time()
@@ -286,23 +281,6 @@ for step in range(args.num_iterations + 1):
 if master_process:
     print(f"peak memory consumption: {torch.cuda.max_memory_allocated() // 1024 // 1024} MiB")
 
-if master_process:
-    if cli_args.pretraining:
-        log = dict(model=raw_model.state_dict(), optimizers=[opt.state_dict() for opt in optimizers])
-        torch.save(log, os.path.join(cli_args.out_path, f"{config.language}_{config.paradigm}_good.pth"))
-    else:
-        log = dict(model=raw_model.state_dict(), optimizers=[opt.state_dict() for opt in optimizers])
-        torch.save(log, os.path.join(cli_args.out_path, f"{cli_args.task}_{config.language}_{config.paradigm}_{cli_args.cross_val_counter}_finetuned.pth"))
-
 # -------------------------------------------------------------------------
 # clean up nice
 dist.destroy_process_group()
-
-# if master_process:
-#     SENDER = "tiyliu@ucdavis.edu"
-#     RECIPIENT = "tiyliu@ucdavis.edu"
-#     SUBJECT = f"Training completed for {config.language}_{config.paradigm}"
-#     BODY = "Training done."
-#     APP_PASSWORD = email_password  # 16-character app password (no spaces when using)
-
-#     send_email_gmail(SENDER, RECIPIENT, SUBJECT, BODY, APP_PASSWORD)

@@ -9,8 +9,9 @@ from Definitions.Tokenizer import Tokenizer, TokenizerConfig
 # CONFIGURATION
 # -----------------------------
 RUNS = {
-    "finetune": "finetune_eval",
+    "finetune": "finetune_eval/second_time_run",
     "first_time": "finetune_eval/first_time_run",
+    "bpe_uni_extended": "finetune_eval/bpe_uni_extended",
 }
 
 CONFIGS_PATH = "C:/Users/timoy/OneDrive/Desktop/syl-gpt-refactor/Configs"
@@ -23,6 +24,10 @@ compiler = {}       # Tracks hit rates
 meta_compiler = {}  # Tracks meta info (tokens, matches)
 guess_compiler = {} # Tracks guesses per paradigm
 tokenizer_index = {}
+
+def add_significance_bracket(ax, x1, x2, y, h, text):
+    ax.plot([x1, x1, x2, x2], [y, y+h, y+h, y], lw=1.5, c="black")
+    ax.text((x1 + x2) / 2, y + h, text, ha="center", va="bottom")
 
 # -----------------------------
 # DATA LOADING
@@ -72,7 +77,8 @@ for run, folder in RUNS.items():
 
                     if debug_mode:
                         total_pretokens += len(deconstructed)
-                        total_fallback += sum(x[1] for x in deconstructed)
+                        total_fallback += sum([x[1] for x in deconstructed])
+                        # number of pretokens fell back on
 
                     # ---- gold count ----
                     gold = None
@@ -133,7 +139,32 @@ for task in compiler:
             continue
 
         plt.figure(figsize=(8, 5))
-        bars = plt.bar(labels, means, yerr=errors, capsize=5)
+        fig, ax = plt.subplots(figsize=(8, 5))
+        bars = ax.bar(labels, means, yerr=errors, capsize=5)
+        # ---- significance brackets for non-overlapping error bars ----
+        y_max = max(m + e for m, e in zip(means, errors))
+        h = 0.01  # bracket height
+
+        for i in range(len(means)):
+            for j in range(i + 1, len(means)):
+                mean_i, err_i = means[i], errors[i]
+                mean_j, err_j = means[j], errors[j]
+
+                # error bar intervals
+                low_i, high_i = mean_i - err_i, mean_i + err_i
+                low_j, high_j = mean_j - err_j, mean_j + err_j
+
+                # non-overlapping condition
+                if high_i < low_j or high_j < low_i:
+                    add_significance_bracket(
+                        ax,
+                        i,
+                        j,
+                        y=y_max + h,
+                        h=h,
+                        text="*"
+                    )
+                    y_max += h * 1.5
         plt.ylabel("Proportion of Hits")
         plt.title(f"{task} | {language}")
         plt.ylim(0, 0.2)
@@ -196,3 +227,52 @@ for task in meta_compiler:
 
         plt.savefig(f"graphs/match_rate_{task}_{language}.png", bbox_inches="tight")
         plt.close()
+
+# ----------------------------- #
+# PLOTS: FALLBACK RATE BY LANGUAGE (ONE GRAPH PER TASK)
+# ----------------------------- #
+for task in meta_compiler:
+    labels = []
+    rates = []
+    pretokens = []
+
+    for language in meta_compiler[task]:
+        total_fallback = 0
+        total_tokens = 0
+
+        for paradigm in meta_compiler[task][language]:
+            for d in meta_compiler[task][language][paradigm]:
+                total_fallback += d["total_fallback"]
+                total_tokens += d["total_tokens"]
+
+        if total_tokens == 0:
+            continue
+
+        labels.append(language)
+        rates.append(total_fallback / total_tokens)
+        pretokens.append(total_tokens)
+
+    if not labels:
+        continue
+
+    plt.figure(figsize=(8, 5))
+    bars = plt.bar(labels, rates, edgecolor="black")
+    plt.ylabel("Fallback Rate (fallback / pretokens)")
+    plt.title(f"Tokenizer Fallback Rate by Language | {task}")
+    plt.ylim(0, 1)
+
+    for bar, rate, pt in zip(bars, rates, pretokens):
+        plt.text(
+            bar.get_x() + bar.get_width() / 2,
+            bar.get_height() + 0.015,
+            f"{rate:.2f}\npretokens={pt}",
+            ha="center",
+            va="bottom",
+            fontsize=9
+        )
+
+    plt.savefig(
+        f"graphs/fallback_rate_by_language_{task}.png",
+        bbox_inches="tight"
+    )
+    plt.close()

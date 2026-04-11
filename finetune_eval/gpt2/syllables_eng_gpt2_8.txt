@@ -1,0 +1,1 @@
+syllables,eng,gpt2,8,0.090000,9,100

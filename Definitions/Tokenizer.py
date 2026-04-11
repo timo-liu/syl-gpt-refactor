@@ -169,6 +169,7 @@ class Tokenizer():
         self.initial_vocab = None     # this is important for sentencepiece so auuuuuugh
         self.uses_syllabifier = False # does this model use the syllabifier model?
         self.morfessor_io = None      # Morfessorio
+        self.sp = None
 
 
         # refactor into two paths: the autotokenizers, and the self-defined

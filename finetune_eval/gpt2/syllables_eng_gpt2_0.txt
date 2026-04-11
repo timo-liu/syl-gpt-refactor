@@ -1,0 +1,1 @@
+syllables,eng,gpt2,0,0.070000,7,100
